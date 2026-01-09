@@ -67,7 +67,7 @@ i).Find the highest salary
 SELECT MAX(salary) AS HighSal FROM employees;
 
 ii).Find average salary of all employees
-SELECT AVG(salary) AS AvgSal FROM employees;(Doubt)
+SELECT AVG(salary) AS AvgSal FROM employees;
 
 iii).List employees ordered by salary (highest first)
 SELECT * FROM employees ORDER BY salary DESC;
@@ -85,6 +85,7 @@ SELECT * FROM employees WHERE id = 100;
 Comprehensive Exercises:-
 
 Exercise Set 1: JOINs Mastery
+1.1 INNER JOIN Exercises:
 
 Q1: List all employees with their department names
 SELECT employees.first_name, employees.last_name, departments.dept_name FROM employees JOIN departments ON employees.dept_id = departments.dept_id;
@@ -101,4 +102,89 @@ Q4: Find employees in the Engineering department with salary > 70000
 SELECT employees.first_name, employees.last_name, departments.dept_name FROM employees JOIN departments ON employees.dept_id = departments.dept_id 
 WHERE employees.salary > 70000;                                                                                                             
 
+1.2 LEFT JOIN Exercises:
 
+Q1: List all employees and their department names (include employees without departments)
+SELECT e.id, e.first_name, e.last_name, d.dept_name FROM employees AS e LEFT JOIN departments AS d ON e.dept_id = d.dept_id;
+
+Q2: Show all departments and count of employees in each (include departments with 0 employees)
+SELECT d.dept_id, d.dept_name, COUNT(e.id) AS EmplCount FROM departments AS d LEFT JOIN employees AS e ON d.dept_id = e.dept_id GROUP BY d.dept_id;
+
+Q3: List all projects and total hours worked (include projects with no assigned employees)
+SELECT p.project_id, p.project_name, SUM(ep.hours_worked) AS Total_Hours FROM projects AS p LEFT JOIN employee_projects AS ep 
+ON p.project_id = ep.project_id GROUP BY p.project_id;
+
+1.3 RIGHT JOIN Exercises:
+
+Q1: List all departments and their employees (show all departments even if no employees)
+SELECT d.dept_id, d.dept_name, e.first_name, e.last_name FROM employees AS e RIGHT JOIN departments AS d ON e.dept_id = d.dept_id;
+
+Q2: Show all projects with employee assignments (include all projects)
+SELECT p.project_name, e.first_name, e.last_name FROM ((employee_projects AS ep
+RIGHT JOIN projects AS p ON ep.project_id = p.project_id)
+JOIN employees AS e ON ep.emp_id = e.id);
+
+1.4 SELF JOIN Exercise:
+
+Q1: List all employees with their manager's name
+SELECT e1.id, e1.first_name, e1.last_name, e2.first_name AS manager_fname, e2.last_name AS manager_lname FROM employees AS e1, employees AS e2 
+WHERE e1.manager_id = e2.id;
+
+Q2: Find employees who earn more than their manager
+SELECT e1.id, e1.first_name, e1.last_name, e1.salary, e2.first_name AS manager_fname, e2.last_name AS manager_lname, e2.salary FROM employees AS e1, employees AS e2 
+WHERE e1.manager_id = e2.id AND e1.salary > e2.salary;
+
+1.5 CROSS JOIN Exercise:
+
+Q1: Create all possible combinations of employees and projects
+SELECT e.first_name, e.last_name, p.project_name FROM projects AS p CROSS JOIN employees AS e;
+
+Q2: How many total combinations are there?
+SELECT COUNT(*) AS Total_Combinations FROM projects CROSS JOIN employees;
+
+1.6 Multiple JOIN Exercise:
+
+Q1: List employee name, department name, project name, and role for all assignments
+SELECT e.first_name, e.last_name, d.dept_name, p.project_name, ep.role FROM ((employee_projects AS ep
+JOIN employees AS e ON ep.emp_id = e.id JOIN departments AS d ON e.dept_id = d.dept_id)
+JOIN projects AS p ON ep.project_id = p.project_id);
+
+Q2: Find total budget of all projects in each department with department location
+SELECT p.project_name, d.dept_name, d.location, SUM(p.budget) AS Total_Budget FROM projects AS p JOIN departments AS d ON p.dept_id = d.dept_id GROUP BY p.project_id;
+
+Exercise Set 2: UNION Operations
+2.1 Basic UNION:
+
+Q1: Create a list of all unique locations (from both departments and a hypothetical clients table)
+SELECT location FROM departments UNION SELECT location FROM clients;
+
+Q2: Combine employee emails and a fictional customer_emails into one list (remove duplicates)
+SELECT email FROM employees UNION SELECT customer_emails FROM clients;
+
+2.2 UNION ALL:
+
+Q1: Get all salaries from employees and all budgets from projects in one list (keep duplicates)
+SELECT salary FROM employees UNION ALL SELECT budget FROM projects;
+
+Q2: Create a complete activity log showing all hire_dates and project start_dates
+SELECT hire_date AS ActivityLog FROM employees UNION ALL SELECT start_date FROM projects;
+
+2.3 Advanced UNION:
+
+Q1: Create a report showing:
+ - All employees with their salary labeled as 'Employee Salary'
+ - All projects with their budget labeled as 'Project Budget'
+ - Order the combined result by amount
+
+(Doubt)
+
+Exercise Set 3: Subqueries
+3.1 Subqueries in WHERE:
+
+Q1: Find employees whose salary is above the average salary
+SELECT * FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);
+
+Q2: List employees working in departments located in 'New York'
+SELECT e.id, e.first_name, e.last_name, d.location FROM employees AS e JOIN departments AS d ON e.dept_id = d.dept_id WHERE d.location = "New York";
+
+Q3: Find employees who are NOT assigned to any project
