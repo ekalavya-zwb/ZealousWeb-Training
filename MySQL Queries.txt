@@ -188,3 +188,53 @@ Q2: List employees working in departments located in 'New York'
 SELECT e.id, e.first_name, e.last_name, d.location FROM employees AS e JOIN departments AS d ON e.dept_id = d.dept_id WHERE d.location = "New York";
 
 Q3: Find employees who are NOT assigned to any project
+
+Exercise Set 4: GROUP BY & HAVING
+4.1 Basic GROUP BY:
+
+Q1: Count employees in each department
+SELECT d.dept_name, COUNT(e.id) AS EmplCount FROM employees AS e JOIN departments AS d ON e.dept_id = d.dept_id GROUP BY dept_name; 
+
+Q2: Calculate total and average salary per department
+SELECT d.dept_name, SUM(e.salary) AS TotalSal, AVG(e.salary) AS AvgSal FROM employees AS e JOIN departments AS d ON e.dept_id = d.dept_id GROUP BY d.dept_name;
+
+Q3: Find total hours worked per project
+SELECT p.project_name, SUM(ep.hours_worked) AS TotalHours FROM projects AS p JOIN employee_projects AS ep ON p.project_id = ep.project_id GROUP BY p.project_name;
+
+Q4: Count number of projects per department
+SELECT d.dept_name, COUNT(p.project_id) AS ProjectsCount FROM projects AS p JOIN departments AS d ON p.dept_id = d.dept_id GROUP BY d.dept_name;
+
+4.2 HAVING Clause:
+
+Q1: Find departments with more than 2 employees
+SELECT d.dept_name, COUNT(e.id) AS EmplCount FROM employees AS e JOIN departments AS d ON e.dept_id = d.dept_id GROUP BY d.dept_name HAVING COUNT(e.id) > 2;
+
+Q2: List projects where total hours worked > 500
+SELECT p.project_name, SUM(ep.hours_worked) AS TotalHours FROM projects AS p JOIN employee_projects AS ep ON p.project_id = ep.project_id GROUP BY p.project_name 
+HAVING SUM(ep.hours_worked) > 500;
+
+Q3: Find departments with average salary > 65000
+SELECT d.dept_name, AVG(e.salary) AS AvgSalary FROM departments AS d JOIN employees AS e ON d.dept_id = e.dept_id GROUP BY d.dept_name HAVING AVG(e.salary) > 65000;
+
+Q4: Show employees who work on more than 1 project
+SELECT e.id, e.first_name, e.last_name, COUNT(p.project_id) AS Projects_Count FROM ((employee_projects AS ep 
+JOIN employees AS e ON ep.emp_id = e.id)
+JOIN projects AS p ON ep.project_id = p.project_id)
+GROUP BY e.id HAVING COUNT(p.project_id) > 1 ORDER BY e.id;
+
+4.3 Advanced Grouping:
+
+Q1: For each department, show min, max, and average salary
+SELECT d.dept_name, MIN(e.salary) AS MinSal, MAX(e.salary) AS MaxSal, AVG(e.salary) AS AvgSal FROM employees AS e JOIN departments AS d ON e.dept_id = d.dept_id 
+GROUP BY d.dept_name;
+
+Q2: Find the department with the highest total salary payout
+(Doubt)
+
+Q3: List projects with their employee count and total hours, only where employee count > 2
+SELECT p.project_name, COUNT(ep.emp_id) AS Empl_Count, SUM(ep.hours_worked) AS TotalHours FROM employee_projects AS ep JOIN projects AS p ON ep.project_id = p.project_id 
+GROUP BY p.project_name HAVING COUNT(ep.emp_id) > 2;
+
+Q4: Group by multiple columns: department and hire year, count employees
+SELECT d.dept_name, YEAR(e.hire_date) AS hire_year, COUNT(e.id) AS EmplCount FROM employees AS e JOIN departments AS d ON e.dept_id = d.dept_id 
+GROUP BY d.dept_name, YEAR(e.hire_date) ORDER BY hire_year;
