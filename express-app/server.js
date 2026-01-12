@@ -47,6 +47,27 @@ app.get("/api/users/:id", (req, res) => {
   res.status(200).json(user);
 });
 
+app.get("/api/products/:id", (req, res) => {
+  const productId = parseInt(req.params.id);
+  const product = products.find((p) => p.id === productId);
+
+  if (!product) {
+    res.status(404).send("Product not found!");
+  }
+
+  res.status(200).json(product);
+});
+
+app.get("/api/search", (req, res) => {
+  const name = req.query.name;
+
+  if (!name) {
+    res.status(400).send("Please provide a name to search!");
+  }
+
+  res.status(200).send(`Searching for: ${name}`);
+});
+
 app.use((req, res) => {
   res.status(404).send("404 - Page Not Found!");
 });
