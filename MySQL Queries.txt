@@ -185,9 +185,28 @@ Q1: Find employees whose salary is above the average salary
 SELECT * FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);
 
 Q2: List employees working in departments located in 'New York'
-SELECT e.id, e.first_name, e.last_name, d.location FROM employees AS e JOIN departments AS d ON e.dept_id = d.dept_id WHERE d.location = "New York";
+SELECT first_name, last_name FROM employees WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = "New York");
 
 Q3: Find employees who are NOT assigned to any project
+SELECT first_name, last_name FROM employees WHERE id IN (SELECT emp_id FROM employee_projects WHERE project_id IS NULL);
+
+Q4: Get employees who work on projects with budget > 100000
+SELECT first_name, last_name FROM employees WHERE id IN 
+(SELECT ep.emp_id FROM employee_projects AS ep JOIN projects AS p ON ep.project_id = p.project_id WHERE p.budget > 100000);
+
+Q5: Find the employee(s) with the highest salary
+SELECT * FROM employees WHERE salary = (SELECT MAX(salary) FROM employees);
+
+3.2 Subqueries with IN:
+
+Q1: Find employees who work in either Engineering or Marketing
+SELECT * FROM employees WHERE dept_id IN (SELECT dept_id FROM departments WHERE dept_name = "Engineering" OR dept_name = "Marketing");
+
+Q2: List projects that have at least one employee assigned
+(Doubt)
+
+Q3: Find departments that have no projects
+(Doubt)
 
 Exercise Set 4: GROUP BY & HAVING
 4.1 Basic GROUP BY:
@@ -238,3 +257,26 @@ GROUP BY p.project_name HAVING COUNT(ep.emp_id) > 2;
 Q4: Group by multiple columns: department and hire year, count employees
 SELECT d.dept_name, YEAR(e.hire_date) AS hire_year, COUNT(e.id) AS EmplCount FROM employees AS e JOIN departments AS d ON e.dept_id = d.dept_id 
 GROUP BY d.dept_name, YEAR(e.hire_date) ORDER BY hire_year;
+
+Exercise Set 5: Advanced String Functions
+
+Q1: Display full name (first + last) in uppercase for all employees
+SELECT CONCAT(UCASE(first_name), " ", UCASE(last_name)) AS FullName FROM employees;
+
+Q2: Create email usernames (part before @) from employee emails
+SELECT SUBSTRING_INDEX(email, "@", 1) AS Username FROM employees;
+
+Q3: Find employees whose last name contains 'son'
+SELECT * FROM employees WHERE LOCATE("son", last_name) != 0;
+
+Q4: Display employee names with first letter of first name + full last name (e.g., "J. Doe")
+SELECT CONCAT(SUBSTR(first_name, 1, 1), ".", last_name) FROM employees;
+
+Q5: Replace all 'New York' locations with 'NY' in departments
+SELECT dept_id, dept_name, REPLACE(LOCATION, "New York", "NY") AS location FROM departments;
+
+Q6: Find length of each project name and order by length
+SELECT project_name, LENGTH(project_name) AS ProjNameLen FROM projects ORDER BY LENGTH(project_name);
+
+Q7: Extract domain name from employee emails
+SELECT SUBSTRING_INDEX(email, "@", -1) AS Domain FROM employees;
