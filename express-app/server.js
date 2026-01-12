@@ -18,7 +18,11 @@ let products = [
 ];
 
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to my express application!");
+  res.status(200).json({
+    message: "Welcome to my express application!",
+    users: "/api/users",
+    products: "/api/products",
+  });
 });
 
 app.get("/api", (req, res) => {
@@ -41,7 +45,7 @@ app.get("/api/users/:id", (req, res) => {
   const user = users.find((u) => u.id === userId);
 
   if (!user) {
-    res.status(404).send("User not found!");
+    res.status(404).json({ error: "User not found!" });
   }
 
   res.status(200).json(user);
@@ -52,7 +56,7 @@ app.get("/api/products/:id", (req, res) => {
   const product = products.find((p) => p.id === productId);
 
   if (!product) {
-    res.status(404).send("Product not found!");
+    res.status(404).json({ error: "Product not found!" });
   }
 
   res.status(200).json(product);
@@ -62,14 +66,14 @@ app.get("/api/search", (req, res) => {
   const name = req.query.name;
 
   if (!name) {
-    res.status(400).send("Please provide a name to search!");
+    res.status(400).json({ error: "Please provide a name to search!" });
   }
 
-  res.status(200).send(`Searching for: ${name}`);
+  res.status(200).json({ message: `Searching for: ${name}` });
 });
 
 app.use((req, res) => {
-  res.status(404).send("404 - Page Not Found!");
+  res.status(404).json({ error: "404 - Page Not Found!" });
 });
 
 app.listen(PORT, () => {
