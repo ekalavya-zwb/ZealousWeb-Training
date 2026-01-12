@@ -280,3 +280,29 @@ SELECT project_name, LENGTH(project_name) AS ProjNameLen FROM projects ORDER BY 
 
 Q7: Extract domain name from employee emails
 SELECT SUBSTRING_INDEX(email, "@", -1) AS Domain FROM employees;
+
+Exercise Set 6: Date Functions
+
+Q1: Calculate how many days each employee has been with the company
+SELECT first_name, last_name, DATEDIFF(CURRENT_DATE, hire_date) AS TotalDays FROM employees;
+
+Q2: Find employees hired in 2022
+SELECT first_name, last_name, YEAR(hire_date) AS hire_year FROM employees WHERE YEAR(hire_date) = "2022";
+
+Q3: Calculate project duration in days
+SELECT project_id, project_name, DATEDIFF(end_date, start_date) AS Duration FROM projects;
+
+Q4: Find employees who will celebrate their 2-year anniversary in the next 90 days
+(Doubt)
+
+Q5: Show month name when each employee was hired
+SELECT first_name, last_name, MONTHNAME(hire_date) AS hire_month FROM employees;
+
+Q6: Calculate average tenure of employees in each department
+(Doubt)
+
+Q7: Find projects that lasted more than 6 months
+SELECT project_id, project_name, (MONTH(end_date) - MONTH(start_date)) AS Months FROM projects WHERE (MONTH(end_date) - MONTH(start_date)) > 6;
+
+Q8: Display hire_date in format 'DD-MM-YYYY'
+(Doubt)
