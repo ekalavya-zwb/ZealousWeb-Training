@@ -306,3 +306,215 @@ SELECT project_id, project_name, (MONTH(end_date) - MONTH(start_date)) AS Months
 
 Q8: Display hire_date in format 'DD-MM-YYYY'
 (Doubt)
+
+Exercise Set 7: CASE Statements
+
+Q1: Categorize employees as 'High Earner' (>75k), 'Medium Earner' (50k-75k), 'Entry Level' (<50k)
+SELECT first_name, last_name, salary,
+CASE 
+	WHEN salary > 75000 THEN "High Earner"
+    WHEN salary BETWEEN 50000 AND 75000 THEN "Medium Earner"
+    ELSE "Entry Level"
+END AS CategoryText
+FROM employees;
+
+Q2: Label projects as 'Small' (<100k), 'Medium' (100k-150k), 'Large' (>150k) based on budget
+SELECT project_id, project_name, budget,
+CASE 
+	WHEN budget > 150000 THEN "Large"
+    WHEN budget BETWEEN 100000 AND 150000 THEN "Medium"
+    ELSE "Small"
+END AS CategoryText
+FROM projects;
+
+Q3: Create seniority levels based on hire date (Senior: before 2022, Mid: 2022, Junior: after 2022)
+SELECT first_name, last_name, YEAR(hire_date) AS hire_year,
+CASE 
+	WHEN YEAR(hire_date) > 2022 THEN "Junior"
+    WHEN YEAR(hire_date) < 2022 THEN "Senior"
+    ELSE "Intermediate"
+END AS CategoryText
+FROM employees;
+
+Q4: Show if employee salary is 'Above Average', 'Average', or 'Below Average'
+SELECT id, first_name, last_name, salary,
+CASE 
+	WHEN salary > (SELECT AVG(salary) FROM employees) THEN "Above Average"
+    WHEN salary < (SELECT AVG(salary) FROM employees) THEN "Below Average"
+    ELSE "Average"
+END AS CategoryText
+FROM employees;
+
+Q5: Create a bonus column: 10% for Engineering, 8% for Sales, 5% for others
+SELECT e.first_name, e.last_name, d.dept_name,
+CASE 
+	WHEN d.dept_name = "Engineering" THEN e.salary * 0.1
+    WHEN  d.dept_name = "Sales" THEN e.salary * 0.08
+    ELSE e.salary * 0.05
+END AS bonus
+FROM employees AS e JOIN departments AS d ON e.dept_id = d.dept_id;
+
+Exercise Set 8: Indexes
+
+Q1: Create an index on the email column of employees table
+CREATE INDEX idx_email ON employees (email);
+
+Q2: Create a composite index on dept_id and salary
+CREATE INDEX idx_empSalary ON employees (id, salary);
+
+Q3: Create a unique index on employee email
+CREATE INDEX idx_uniqueEmail ON employees (email);
+
+Q4: Show all indexes on the employees table
+SHOW INDEX from employees;
+
+Q5: Measure query performance before and after creating index on large dataset
+// Before creating index
+SELECT email FROM employees;  (Query took 0.0004 seconds)
+// After creating index
+SELECT email FROM employees;  (Query took 0.0003 seconds)
+
+Q6: When would you NOT want to create an index? (Discussion question)
+Updating a table with indexes takes more time than updating a table without (because the indexes also need an update).
+So, only create indexes on columns that will be frequently searched against.
+
+Exercise Set 9: Views
+
+Q1: Create a view 'employee_details' showing employee name, department, and salary
+CREATE VIEW employee_details AS
+SELECT e.first_name, e.last_name, d.dept_name, e.salary
+FROM employees AS e JOIN departments AS d
+ON e.dept_id = d.dept_id;
+
+SELECT * FROM employee_details;
+
+Q2: Create a view 'project_summary' with project name, department, employee count, total hours
+CREATE VIEW project_summary AS
+SELECT p.project_name, d.dept_name, COUNT(ep.emp_id) AS EmpCount, SUM(ep.hours_worked) AS TotalHours
+FROM ((employee_projects AS ep
+JOIN projects AS p ON ep.project_id = p.project_id)
+JOIN departments AS d ON p.dept_id = d.dept_id)
+GROUP BY p.project_name, d.dept_name;
+
+SELECT * FROM project_summary;
+
+Q3: Create a view showing high earners (salary > 70000) with their projects
+CREATE VIEW high_earners AS
+SELECT e.first_name, e.last_name, p.project_name, e.salary
+FROM ((employee_projects AS ep
+JOIN projects AS p ON ep.project_id = p.project_id)
+JOIN employees AS e ON ep.emp_id = e.id)
+WHERE e.salary > 70000;
+
+SELECT * FROM high_earners;
+
+Q4: Update a record through a view and verify
+CREATE OR REPLACE VIEW high_earners AS
+SELECT e.first_name, e.last_name, p.project_name, ep.role, e.salary
+FROM ((employee_projects AS ep
+JOIN projects AS p ON ep.project_id = p.project_id)
+JOIN employees AS e ON ep.emp_id = e.id)
+WHERE e.salary > 70000;
+
+SELECT * FROM high_earners;
+
+Q5: Create a view showing department-wise statistics (emp count, avg salary, total salary)
+CREATE VIEW dept_stats AS
+SELECT d.dept_name, COUNT(e.id) AS EmpCount, SUM(e.salary) AS TotalSal, AVG(e.salary) AS AvgSal
+FROM employees AS e JOIN departments AS d
+ON e.dept_id = d.dept_id
+GROUP BY d.dept_name;
+
+SELECT * FROM dept_stats;
+
+Exercise Set 10: Transactions
+
+Q1: Transfer an employee from one department to another (update + log entry) in a transaction
+CREATE TABLE transfer_log (log_id INT PRIMARY KEY AUTO_INCREMENT, emp_id INT, old_dept_id INT, new_dept_id INT, transfer_date DATETIME);
+
+START TRANSACTION;
+
+SET @old_dept_id = (
+    SELECT dept_id 
+    FROM employees 
+    WHERE id = 5
+);
+
+UPDATE employees
+SET dept_id = 3
+WHERE id = 5;
+
+INSERT INTO transfer_log (emp_id, old_dept_id, new_dept_id, transfer_date)
+VALUES (5, @old_dept_id, 3, NOW());
+
+COMMIT;
+
+Q2: Give a raise to all employees in a department and log it (rollback if error)
+CREATE TABLE salary_raise_log (log_id INT PRIMARY KEY AUTO_INCREMENT, dept_id INT, raise_percent VARCHAR(255), changed_on DATETIME);
+
+START TRANSACTION;
+
+UPDATE employees
+SET salary = salary + salary * 0.1
+WHERE dept_id = 2;
+
+INSERT INTO salary_raise_log (dept_id, raise_percent, changed_on)
+VALUES (2, "10%", NOW());
+
+COMMIT;
+
+Q3: Create a savepoint scenario: add new project, assign employees, rollback employee assignment only
+START TRANSACTION;
+
+INSERT INTO projects (project_id, project_name, start_date, end_date, budget, dept_id)
+VALUES (6, "ERP Portal", "2023-03-23", "2023-08-12", 100000, 1);
+
+SAVEPOINT new_project;
+
+INSERT INTO employee_projects (emp_id, project_id, hours_worked, role)
+VALUES (1, 6, 250, "Frontend Developer");
+
+INSERT INTO employee_projects (emp_id, project_id, hours_worked, role)
+VALUES (2, 6, 250, "Backend Developer");
+
+ROLLBACK TO new_project;
+
+COMMIT;
+
+Q4: Simulate a failed transaction and demonstrate rollback
+START TRANSACTION;
+
+UPDATE employees
+SET salary = salary + salary * 0.1
+WHERE dept_id = 1;
+
+INSERT INTO salary_raise_log (dept_id, raise_percent, changed_on)
+VALUES (1, "10%", NOW());
+
+ROLLBACK;
+
+Q5: Practice: Update multiple tables atomically (employee salary + salaries_history table)
+START TRANSACTION;
+
+SET @old_salary = (
+    SELECT salary 
+    FROM employees 
+    WHERE id = 6
+);
+
+UPDATE employees
+SET salary = salary + salary * 0.1
+WHERE id = 6;
+
+SET @new_salary = (
+    SELECT salary 
+    FROM employees 
+    WHERE id = 6
+);
+
+INSERT INTO salaries_history (emp_id, old_salary, new_salary, change_date)
+VALUES (6, @old_salary, @new_salary, CURDATE());
+
+COMMIT;
+
+
