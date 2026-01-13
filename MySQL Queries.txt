@@ -517,4 +517,93 @@ VALUES (6, @old_salary, @new_salary, CURDATE());
 
 COMMIT;
 
+Exercise Set 11: Stored Procedures (Introduction)
+
+Q1: Create a procedure to get all employees in a specific department (IN parameter)
+DELIMITER $$
+
+CREATE PROCEDURE getAllEmployeesByDept (IN dept_no INT)
+BEGIN
+SELECT * FROM employees
+WHERE dept_id = dept_no;
+END $$
+
+DELIMITER ;
+
+CALL getAllEmployeesByDept(3);
+
+Q2: Create a procedure to calculate and return average salary of a department (IN and OUT parameters)
+DELIMITER $$
+
+CREATE PROCEDURE getAvgSal (
+    IN dept_no INT, 
+    OUT avg_sal DECIMAL(10,2)
+)
+BEGIN
+SELECT AVG(salary) INTO avg_sal
+FROM employees
+WHERE dept_id = dept_no;
+END $$
+
+DELIMITER ;
+
+CALL getAvgSal(3, @avg);
+SELECT @avg AS Avg_Sal;
+
+Q3: Create a procedure to give a raise to an employee (IN: emp_id, raise_percent)
+DELIMITER $$
+
+CREATE PROCEDURE giveSalRaise (
+    IN emp_id INT, 
+    IN raise_percent DECIMAL(10,2)
+)
+BEGIN
+UPDATE employees
+SET salary = salary + (salary * raise_percent)
+WHERE id = emp_id;
+END $$
+
+DELIMITER ;
+
+SET @raise_per = 0.1;
+CALL giveSalRaise(3, @raise_per);
+
+Q4: Create a procedure to get employee count per department
+DELIMITER $$
+
+CREATE PROCEDURE getEmpCountByDept (
+    IN dept_no INT,
+    OUT emp_count INT
+)
+BEGIN
+SELECT COUNT(id) INTO emp_count
+FROM employees
+WHERE dept_id = dept_no;
+END $$
+
+DELIMITER ;
+
+CALL getEmpCountByDept(3, @count);
+SELECT @count AS Emp_Count;
+
+Q5: Create a procedure that assigns an employee to a project
+DELIMITER $$
+
+CREATE PROCEDURE assignEmp (
+    IN emp_id INT,
+    IN project_id INT,
+    IN hours_worked INT,
+    IN role VARCHAR(255)
+)
+BEGIN
+INSERT INTO employee_projects (emp_id, project_id, hours_worked, role)
+VALUES (emp_id, project_id, hours_worked, role);
+END $$
+
+DELIMITER ;
+
+CALL assignEmp(1, 6, 100, "Frontend Developer");
+
+
+
 
