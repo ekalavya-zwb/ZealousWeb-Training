@@ -41,7 +41,7 @@ app.get("/api/employees/:id", (req, res) => {
         return res.status(500).json({ error: error.message });
       }
       if (result.length === 0) {
-        return res.status(404).json("Employee not found!");
+        return res.status(404).json({ error: "Employee not found!" });
       }
       res.status(200).json(result[0]);
     }
@@ -73,15 +73,61 @@ app.post("/api/employees", (req, res) => {
   );
 });
 
-// app.get("/api/search", (req, res) => {
-//   const name = req.query.name;
+app.put("/api/employees/:id", (req, res) => {
+  const empId = parseInt(req.params.id);
+  const {
+    first_name,
+    last_name,
+    email,
+    hire_date,
+    salary,
+    dept_id,
+    manager_id,
+  } = req.body;
 
-//   if (!name) {
-//     res.status(400).json({ error: "Please provide a name to search!" });
-//   }
+  con.query(
+    "UPDATE employees SET first_name = ?, last_name = ?, email = ?, hire_date = ?, salary = ?, dept_id = ?, manager_id = ? WHERE id = ?",
+    [
+      first_name,
+      last_name,
+      email,
+      hire_date,
+      salary,
+      dept_id,
+      manager_id,
+      empId,
+    ],
+    (error, result) => {
+      if (error) {
+        return res.status(500).json({ error: error.message });
+      }
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Employee not found!" });
+      }
+      res.status(200).json({
+        message: "Employee updated successfully!",
+        affectedRows: `# of rows affected: ${result.affectedRows}`,
+      });
+    }
+  );
+});
 
-//   res.status(200).json({ message: `Searching for: ${name}` });
-// });
+app.delete("/api/employees/:id", (req, res) => {
+  const empId = parseInt(req.params.id);
+
+  con.query("DELETE FROM employees WHERE id = ?", [empId], (error, result) => {
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Employee not found!" });
+    }
+    res.status(200).json({
+      message: "Employee deleted successfully!",
+      affectedRows: `# of rows affected: ${result.affectedRows}`,
+    });
+  });
+});
 
 app.use((req, res) => {
   res.status(404).json({ error: "404 - Page Not Found!" });
