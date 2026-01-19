@@ -604,6 +604,142 @@ DELIMITER ;
 
 CALL assignEmp(1, 6, 100, "Frontend Developer");
 
+Sorry an unexpected error happened!
 
 
+Level 1: Hard SQL + Data Integrity Challenges
+Exercise 1: Salary Audit Engine (Pure SQL)
 
+DELIMITER $$
+
+CREATE TRIGGER update_sal 
+BEFORE UPDATE
+ON employees
+FOR EACH ROW
+BEGIN
+    IF NEW.salary < OLD.salary * 0.8 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Salary reduction cannot exceed 20%';
+    END IF;
+
+    IF NEW.salary <> OLD.salary THEN
+        INSERT INTO salaries_history (emp_id, old_salary, new_salary, change_date)
+        VALUES (OLD.id, OLD.salary, NEW.salary, NOW());
+    END IF;
+END $$
+
+DELIMITER ;
+
+UPDATE employees SET salary = salary * 0.6 WHERE id = 1; // Fails
+
+Exercise 2: Project Cost Overrun Detector
+
+SELECT p.project_name, p.budget, ROUND(SUM(ep.hours_worked * (e.salary / (22 * 8))),2) AS actual_cost, 
+CASE
+	WHEN SUM(ep.hours_worked * (e.salary / (22 * 8))) > p.budget THEN "OVER_BUDGET"
+    ELSE "IN_BUDGET"
+END AS Status
+FROM employee_projects ep 
+JOIN projects p ON ep.project_id = p.project_id
+JOIN employees e ON ep.emp_id = e.id
+GROUP BY p.project_id, p.project_name, p.budget;
+
+Exercise 3: Department Performance Ranking
+(Doubt)
+
+Level 2: Stored Procedure Hell Mode 
+Exercise 4: Atomic Employee Termination Procedure
+
+DELIMITER $$
+
+CREATE PROCEDURE terminate_employee(
+    IN p_emp_id INT, 
+    IN ptermination_reason VARCHAR(255)
+)
+BEGIN
+DECLARE emp_exist INT;
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+    ROLLBACK;
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Termination failed!';
+END;
+START TRANSACTION;
+
+SELECT COUNT(*) INTO emp_exist 
+FROM employees 
+WHERE id = p_emp_id;
+
+IF emp_exist = 0 THEN
+	ROLLBACK;
+	SIGNAL SQLSTATE "45000"
+    SET MESSAGE_TEXT = "Employee not found!";
+END IF;
+
+INSERT INTO terminated_employees (id, first_name, last_name, email, hire_date, salary, dept_id, manager_id, termination_reason, termination_at)
+SELECT id, first_name, last_name, email, hire_date, salary, dept_id, manager_id, ptermination_reason, NOW()
+FROM employees
+WHERE id = p_emp_id;
+
+DELETE FROM employee_projects
+WHERE emp_id = p_emp_id;
+
+DELETE FROM employees
+WHERE id = p_emp_id;
+
+COMMIT;
+END $$
+
+DELIMITER ;
+
+CALL terminate_employee(9,"Didn't show any progress");
+
+Exercise 5: Bulk Project Assignment Procedure
+
+DELIMITER $$
+
+CREATE PROCEDURE assign_project_bulk(
+    IN p_project_id INT, 
+    IN p_dept_id INT
+)
+BEGIN
+DECLARE v_skipped INT DEFAULT 0;
+DECLARE v_assigned INT DEFAULT 0;
+
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+    ROLLBACK;
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Employees assignment failed!';
+END;
+START TRANSACTION;
+
+SELECT COUNT(*) 
+INTO v_skipped
+FROM employees e
+JOIN employee_projects ep
+ON ep.emp_id = e.id
+WHERE ep.project_id = p_project_id AND
+e.dept_id = p_dept_id;
+
+INSERT INTO employee_projects(emp_id, project_id, hours_worked, role)
+SELECT e.id, p_project_id, 0, "Contributor" 
+FROM employees e
+LEFT JOIN employee_projects ep
+ON ep.emp_id = e.id
+AND ep.project_id = p_project_id
+WHERE e.dept_id = p_dept_id
+AND ep.emp_id IS NULL;
+
+SET v_assigned = ROW_COUNT();
+
+COMMIT;
+
+SELECT 
+	v_assigned AS assigned,
+	v_skipped AS skipped;
+END $$
+
+DELIMITER ;
+
+CALL assign_project_bulk(7,1);
