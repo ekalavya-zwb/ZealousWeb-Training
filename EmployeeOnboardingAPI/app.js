@@ -1,5 +1,6 @@
 const express = require("express");
 const con = require("./db/db.js");
+const onboardLimiter = require("./middleware/onboardLimiter.js");
 const app = express();
 const PORT = 3000;
 
@@ -12,7 +13,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/api/employees/onboard", (req, res) => {
+app.post("/api/employees/onboard", onboardLimiter, (req, res) => {
   const {
     first_name,
     last_name,
