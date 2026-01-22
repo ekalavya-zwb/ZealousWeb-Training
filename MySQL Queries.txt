@@ -203,10 +203,66 @@ Q1: Find employees who work in either Engineering or Marketing
 SELECT * FROM employees WHERE dept_id IN (SELECT dept_id FROM departments WHERE dept_name = "Engineering" OR dept_name = "Marketing");
 
 Q2: List projects that have at least one employee assigned
-(Doubt)
+SELECT ep.project_id, p.project_name, COUNT(ep.emp_id) AS emp_count 
+FROM employee_projects ep
+JOIN projects p
+ON ep.project_id = p.project_id
+WHERE ep.project_id IN(
+SELECT project_id FROM projects
+)
+GROUP BY project_id
+HAVING COUNT(ep.emp_id) >= 1;
 
 Q3: Find departments that have no projects
-(Doubt)
+SELECT dept_id, dept_name 
+FROM departments d
+WHERE dept_id NOT IN (
+SELECT dept_id FROM projects
+);
+
+3.3 Subqueries with EXISTS:
+
+Q1: Find departments that have at least one employee
+SELECT d.dept_id, d.dept_name 
+FROM departments d
+WHERE EXISTS (
+SELECT 1
+FROM employees e
+WHERE e.dept_id = d.dept_id
+);
+
+Q2: List employees who are assigned to at least one project
+SELECT e.id, e.first_name, e.last_name
+FROM employees e
+WHERE EXISTS (
+SELECT 1
+FROM employee_projects ep
+WHERE ep.emp_id = e.id
+)
+
+Q3: Find projects with budget greater than any employee's salary in that department
+SELECT p.project_id, p.project_name, p.budget
+FROM projects p
+WHERE EXISTS (
+SELECT 1
+FROM employees e
+WHERE e.salary < p.budget
+AND e.dept_id = p.dept_id 
+);
+
+3.4 Subqueries in SELECT:
+
+Q1: List all employees with a column showing how much more/less they earn compared to average
+SELECT id, first_name, last_name, salary, 
+ROUND(salary - (SELECT AVG(salary) FROM employees), 2) AS sal_diff
+FROM employees;
+
+Q2: Show each department with the count of employees and count of projects
+SELECT d.dept_id, d.dept_name, COUNT(DISTINCT e.id) AS emp_count, COUNT(DISTINCT p.project_id) AS project_count
+FROM departments d
+LEFT JOIN employees e ON d.dept_id = e.dept_id
+LEFT JOIN projects p ON d.dept_id = p.dept_id
+GROUP BY d.dept_id, d.dept_name;
 
 Exercise Set 4: GROUP BY & HAVING
 4.1 Basic GROUP BY:
