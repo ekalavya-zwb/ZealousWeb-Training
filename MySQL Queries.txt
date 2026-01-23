@@ -264,6 +264,22 @@ LEFT JOIN employees e ON d.dept_id = e.dept_id
 LEFT JOIN projects p ON d.dept_id = p.dept_id
 GROUP BY d.dept_id, d.dept_name;
 
+3.5 Subqueries in FROM (Derived Tables):
+
+Q1: Find the average salary per department, then find departments with above-overall-average dept salary
+(Doubt)
+
+Q2: Get the top 3 highest-paid employees from each department
+(Doubt)
+
+3.6 Correlated Subqueries:
+
+Q1: Find employees who earn more than the average salary in their department
+(Doubt)
+
+Q2: List employees who work more hours than the average for their project
+(Doubt)
+
 Exercise Set 4: GROUP BY & HAVING
 4.1 Basic GROUP BY:
 
