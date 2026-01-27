@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 20px;
+  padding: 20px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: black;
+}

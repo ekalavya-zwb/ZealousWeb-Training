@@ -1,0 +1,30 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+.count-display {
+  font-size: 4rem;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-container button {
+  font-size: 1.5rem;
+}
+
+.error-msg {
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
