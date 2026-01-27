@@ -1,3 +1,9 @@
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -10,17 +16,17 @@ h1 {
   font-size: 4rem;
 }
 
-.count-display {
+.countDisplay {
   font-size: 4rem;
 }
 
-.btn-container {
+.btnContainer {
   display: flex;
   justify-content: center;
   gap: 10px;
 }
 
-.btn-container button {
+.btnContainer button {
   font-size: 1.5rem;
   padding: 5px 10px;
   background-color: mediumpurple;
@@ -28,12 +34,16 @@ h1 {
   cursor: pointer;
 }
 
-.error-msg {
+.errorMsg {
   font-size: 1.5rem;
   margin-top: 10px;
   color: crimson;
 }
 
-.btn-container .danger {
+.btnContainer .danger {
   background-color: tomato;
 }
+
+.btnContainer button:disabled {
+  cursor: not-allowed;
+} */

@@ -1,9 +1,10 @@
 import React from "react";
 import { useState } from "react";
-import "../styles/Counter.css";
+import styles from "../styles/Counter.module.css";
 
 const Counter = () => {
   const [count, setCount] = useState(0);
+
   const MIN = 0;
   const MAX = 100;
 
@@ -17,13 +18,13 @@ const Counter = () => {
   return (
     <>
       <h1>Counter</h1>
-      <div className="count-display">{count}</div>
-      <div className="btn-container">
+      <div className={styles.countDisplay}>{count}</div>
+      <div className={styles.btnContainer}>
         <button
           type="button"
           onClick={() => setCount((prevCount) => prevCount + 1)}
           disabled={count === MAX}
-          className={count === MAX ? "danger" : ""}
+          className={count === MAX ? styles.danger : ""}
         >
           +1
         </button>
@@ -31,7 +32,7 @@ const Counter = () => {
           type="button"
           onClick={() => setCount((prevCount) => prevCount + 5)}
           disabled={count + 5 > MAX}
-          className={count + 5 > MAX ? "danger" : ""}
+          className={count + 5 > MAX ? styles.danger : ""}
         >
           +5
         </button>
@@ -39,7 +40,7 @@ const Counter = () => {
           type="button"
           onClick={() => setCount((prevCount) => prevCount * 2)}
           disabled={count * 2 > MAX}
-          className={count * 2 > MAX ? "danger" : ""}
+          className={count * 2 > MAX ? styles.danger : ""}
         >
           Double
         </button>
@@ -50,7 +51,7 @@ const Counter = () => {
           type="button"
           onClick={() => setCount((prevCount) => prevCount / 2)}
           disabled={count <= 0}
-          className={count <= 0 ? "danger" : ""}
+          className={count <= 0 ? styles.danger : ""}
         >
           Half
         </button>
@@ -58,21 +59,20 @@ const Counter = () => {
           type="button"
           onClick={() => setCount((prevCount) => prevCount - 1)}
           disabled={count - 1 < MIN}
-          className={count - 1 < MIN ? "danger" : ""}
+          className={count - 1 < MIN ? styles.danger : ""}
         >
           -1
         </button>
-
         <button
           type="button"
           onClick={() => setCount((prevCount) => prevCount - 5)}
           disabled={count - 5 < MIN}
-          className={count - 5 < MIN ? "danger" : ""}
+          className={count - 5 < MIN ? styles.danger : ""}
         >
           -5
         </button>
       </div>
-      <div className="error-msg">{message}</div>
+      <div className={styles.errorMsg}>{message}</div>
     </>
   );
 };

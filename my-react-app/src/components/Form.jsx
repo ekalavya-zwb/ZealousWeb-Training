@@ -125,138 +125,138 @@ import { useState } from "react";
 //   );
 // };
 
-// const Form = () => {
-//   const [inputs, setInputs] = useState({
-//     firstName: "John",
-//     tomato: true,
-//     onion: false,
-//   });
-
-//   const handleChange = (event) => {
-//     const { name, value, type, checked } = event.target;
-
-//     const finalVal = type === "checkbox" ? checked : value;
-
-//     setInputs((values) => ({ ...values, [name]: finalVal }));
-//   };
-
-//   const handleSubmit = (event) => {
-//     event.preventDefault();
-//     let fillings = "";
-
-//     if (inputs.firstName.trim() === "") {
-//       alert("Enter your name first!");
-//     } else {
-//       if (inputs.tomato) fillings += "tomato";
-//       if (inputs.onion) {
-//         if (inputs.tomato) {
-//           fillings += " and onion";
-//         } else {
-//           fillings += "onion";
-//         }
-//       }
-//       if (fillings === "") fillings += "no fillings";
-//       alert(`${inputs.firstName.trim()} wants a burger with ${fillings}`);
-//     }
-//   };
-//   return (
-//     <>
-//       <form onSubmit={handleSubmit}>
-//         <label htmlFor="firstName">
-//           Name:
-//           <input
-//             type="text"
-//             name="firstName"
-//             id="firstName"
-//             value={inputs.firstName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <br />
-//         <input
-//           type="checkbox"
-//           name="tomato"
-//           id="tomato"
-//           checked={inputs.tomato}
-//           onChange={handleChange}
-//         />
-//         <label htmlFor="tomato">Tomato</label>
-//         <br />
-//         <input
-//           type="checkbox"
-//           name="onion"
-//           id="onion"
-//           checked={inputs.onion}
-//           onChange={handleChange}
-//         />
-//         <label htmlFor="onion">Onion</label>
-//         <br />
-//         <button type="submit">Submit</button>
-//       </form>
-//     </>
-//   );
-// };
-
 const Form = () => {
-  const [selectedFruit, setSelectedFruit] = useState("Apple");
+  const [inputs, setInputs] = useState({
+    firstName: "John",
+    tomato: true,
+    onion: false,
+  });
 
   const handleChange = (event) => {
-    setSelectedFruit(event.target.value);
+    const { name, value, type, checked } = event.target;
+
+    const finalVal = type === "checkbox" ? checked : value;
+
+    setInputs((values) => ({ ...values, [name]: finalVal }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert(`Your favorite fruit is ${selectedFruit}`);
+    let fillings = "";
+
+    if (inputs.firstName.trim() === "") {
+      alert("Enter your name first!");
+    } else {
+      if (inputs.tomato) fillings += "tomato";
+      if (inputs.onion) {
+        if (inputs.tomato) {
+          fillings += " and onion";
+        } else {
+          fillings += "onion";
+        }
+      }
+      if (fillings === "") fillings += "no fillings";
+      alert(`${inputs.firstName.trim()} wants a burger with ${fillings}`);
+    }
   };
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <label>Select your favorite fruit:</label>
+        <label htmlFor="firstName">
+          Name:
+          <input
+            type="text"
+            name="firstName"
+            id="firstName"
+            value={inputs.firstName}
+            onChange={handleChange}
+          />
+        </label>
         <br />
         <input
-          type="radio"
-          name="fruits"
-          id="apple"
-          value="Apple"
-          checked={selectedFruit === "Apple"}
+          type="checkbox"
+          name="tomato"
+          id="tomato"
+          checked={inputs.tomato}
           onChange={handleChange}
         />
-        <label htmlFor="apple">Apple</label>
+        <label htmlFor="tomato">Tomato</label>
         <br />
         <input
-          type="radio"
-          name="fruits"
-          id="banana"
-          value="Banana"
-          checked={selectedFruit === "Banana"}
+          type="checkbox"
+          name="onion"
+          id="onion"
+          checked={inputs.onion}
           onChange={handleChange}
         />
-        <label htmlFor="banana">Banana</label>
-        <br />
-        <input
-          type="radio"
-          name="fruits"
-          id="mango"
-          value="Mango"
-          checked={selectedFruit === "Mango"}
-          onChange={handleChange}
-        />
-        <label htmlFor="mango">Mango</label>
-        <br />
-        <input
-          type="radio"
-          name="fruits"
-          id="orange"
-          value="Orange"
-          checked={selectedFruit === "Orange"}
-          onChange={handleChange}
-        />
-        <label htmlFor="orange">Orange</label>
+        <label htmlFor="onion">Onion</label>
         <br />
         <button type="submit">Submit</button>
       </form>
     </>
   );
 };
+
+// const Form = () => {
+//   const [selectedFruit, setSelectedFruit] = useState("Apple");
+
+//   const handleChange = (event) => {
+//     setSelectedFruit(event.target.value);
+//   };
+
+//   const handleSubmit = (event) => {
+//     event.preventDefault();
+//     alert(`Your favorite fruit is ${selectedFruit}`);
+//   };
+//   return (
+//     <>
+//       <form onSubmit={handleSubmit}>
+//         <label>Select your favorite fruit:</label>
+//         <br />
+//         <input
+//           type="radio"
+//           name="fruits"
+//           id="apple"
+//           value="Apple"
+//           checked={selectedFruit === "Apple"}
+//           onChange={handleChange}
+//         />
+//         <label htmlFor="apple">Apple</label>
+//         <br />
+//         <input
+//           type="radio"
+//           name="fruits"
+//           id="banana"
+//           value="Banana"
+//           checked={selectedFruit === "Banana"}
+//           onChange={handleChange}
+//         />
+//         <label htmlFor="banana">Banana</label>
+//         <br />
+//         <input
+//           type="radio"
+//           name="fruits"
+//           id="mango"
+//           value="Mango"
+//           checked={selectedFruit === "Mango"}
+//           onChange={handleChange}
+//         />
+//         <label htmlFor="mango">Mango</label>
+//         <br />
+//         <input
+//           type="radio"
+//           name="fruits"
+//           id="orange"
+//           value="Orange"
+//           checked={selectedFruit === "Orange"}
+//           onChange={handleChange}
+//         />
+//         <label htmlFor="orange">Orange</label>
+//         <br />
+//         <button type="submit">Submit</button>
+//       </form>
+//     </>
+//   );
+// };
 
 export default Form;
