@@ -22,9 +22,18 @@ h1 {
 
 .btn-container button {
   font-size: 1.5rem;
+  padding: 5px 10px;
+  background-color: mediumpurple;
+  color: white;
+  cursor: pointer;
 }
 
 .error-msg {
   font-size: 1.5rem;
   margin-top: 10px;
+  color: crimson;
+}
+
+.btn-container .danger {
+  background-color: tomato;
 }
