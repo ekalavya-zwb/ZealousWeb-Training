@@ -17,6 +17,8 @@ import EmployeeForm from "./components/EmployeeForm";
 import LoginForm from "./components/LoginForm";
 import EmployeeStatus from "./components/EmployeeStatus";
 import EmployeeList from "./components/EmployeeList";
+import ToDoList from "./components/ToDoList";
+import MultiForm from "./components/MultiForm";
 
 function App() {
   return (
@@ -76,7 +78,9 @@ function App() {
         status="Available"
         rating={4.5}
       /> */}
-      <EmployeeList />
+      {/* <EmployeeList /> */}
+      {/* <ToDoList /> */}
+      <MultiForm />
     </>
   );
 }

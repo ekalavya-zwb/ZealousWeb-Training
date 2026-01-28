@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../styles/EmployeeList.module.css";
 
 const EmployeeList = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchOption, setSearchOption] = useState("all");
+
   const employees = [
     {
       id: 1,
@@ -45,6 +48,13 @@ const EmployeeList = () => {
       department: "Product",
       salary: 95000,
     },
+    {
+      id: 7,
+      name: "Tom Hiddleston",
+      email: "tom.hiddleston@company.com",
+      department: "Sales",
+      salary: 75000,
+    },
   ];
 
   let total = 0;
@@ -53,13 +63,71 @@ const EmployeeList = () => {
     total += employee.salary;
   }
 
-  const message = employees.length === 0 ? "No employees found" : "";
+  const filteredEmployees = employees.filter((employee) => {
+    const term = searchTerm.toLowerCase().trim();
+
+    if (searchOption !== "all" && term) {
+      return (
+        employee.department.toLowerCase() === searchOption.toLowerCase() &&
+        (employee.name.toLowerCase().includes(term) ||
+          employee.email.toLowerCase().includes(term))
+      );
+    }
+
+    if (searchOption !== "all") {
+      return employee.department.toLowerCase() === searchOption.toLowerCase();
+    }
+
+    if (!term) return true;
+
+    return (
+      employee.name.toLowerCase().includes(term) ||
+      employee.email.toLowerCase().includes(term)
+    );
+  });
+
+  const message =
+    filteredEmployees.length === 0 ? "No employees match your search!" : "";
+
   return (
     <>
-      <input type="text" id="search" placeholder="Search for employees..." />
-      <h2 style={{ textAlign: "center" }}>
-        Total Employees: {employees.length}
-      </h2>
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          placeholder="Search for employees..."
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+        />
+        <select
+          value={searchOption}
+          onChange={(event) => setSearchOption(event.target.value)}
+        >
+          <option value="all">All</option>
+          <option value="engineering">Engineering</option>
+          <option value="marketing">Marketing</option>
+          <option value="finance">Finance</option>
+          <option value="human Resources">Human Resources</option>
+          <option value="sales">Sales</option>
+          <option value="product">Product</option>
+        </select>
+        <button
+          type="button"
+          onClick={() => {
+            setSearchOption("all");
+            setSearchTerm("");
+          }}
+        >
+          Clear Filters
+        </button>
+      </div>
+      <div className={styles.statsContainer}>
+        <h2 style={{ textAlign: "center" }}>
+          Total Employees: {employees.length}
+        </h2>
+        <h2 style={{ textAlign: "center" }}>
+          Filtered Employees: {filteredEmployees.length}
+        </h2>
+      </div>
       <table
         border={2}
         cellPadding={5}
@@ -76,7 +144,7 @@ const EmployeeList = () => {
           </tr>
         </thead>
         <tbody>
-          {employees.map((employee) => (
+          {filteredEmployees.map((employee) => (
             <tr key={employee.id}>
               <td>{employee.id}</td>
               <td>{employee.name}</td>

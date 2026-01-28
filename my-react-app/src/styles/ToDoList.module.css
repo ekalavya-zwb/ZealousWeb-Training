@@ -1,0 +1,91 @@
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ToDoListContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid #333;
+  border-radius: 5px;
+  width: 250px;
+  margin-top: 10px;
+}
+
+.ToDoListContainer h2 {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.TaskContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  min-width: 180px;
+  padding: 5px;
+}
+
+.TaskContainer button {
+  margin: 0px auto;
+}
+
+.addTask {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.addTask input {
+  margin-top: 20px;
+  padding: 6px 12px;
+  font-size: 16px;
+  min-width: 100%;
+  border: 1px solid #333;
+  border-radius: 3px;
+}
+
+.addTask button {
+  margin-top: 20px;
+  padding: 6px 12px;
+  font-size: 16px;
+  border: 1px solid #333;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.error {
+  color: crimson;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.clearTasks {
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: 1px solid #333;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.statsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-top: 10px;
+  font-weight: bold;
+} */

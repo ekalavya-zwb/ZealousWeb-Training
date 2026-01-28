@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.formContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.formData {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 20px;
+  min-width: 350px;
+}
+
+.formData .btnContainer {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.formData label {
+  font-size: 20px;
+}
+
+.formData input {
+  padding: 5px 10px;
+  font-size: 14px;
+  text-align: center;
+  min-width: 80%;
+}
+
+.formData .btnContainer button {
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.error {
+  color: crimson;
+}
