@@ -72,6 +72,7 @@ const MultiForm = () => {
       salary: "",
       hireDate: "",
     });
+    setStep(1);
     console.log(formData);
   };
   return (
