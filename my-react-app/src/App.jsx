@@ -19,6 +19,11 @@ import EmployeeStatus from "./components/EmployeeStatus";
 import EmployeeList from "./components/EmployeeList";
 import ToDoList from "./components/ToDoList";
 import MultiForm from "./components/MultiForm";
+import HooksPractice from "./components/hooksPractice";
+import Timer from "./components/Timer";
+import UpdateTitle from "./components/UpdateTitle";
+import WindowResize from "./components/WindowResize";
+import RandomUser from "./components/RandomUser";
 
 function App() {
   return (
@@ -80,7 +85,12 @@ function App() {
       /> */}
       {/* <EmployeeList /> */}
       {/* <ToDoList /> */}
-      <MultiForm />
+      {/* <MultiForm /> */}
+      {/* <HooksPractice /> */}
+      {/* <Timer /> */}
+      {/* <UpdateTitle /> */}
+      {/* <WindowResize /> */}
+      {/* <RandomUser /> */}
     </>
   );
 }
