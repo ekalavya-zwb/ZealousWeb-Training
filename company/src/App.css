@@ -1,0 +1,13 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.employee-data {
+  border: 1px solid #333;
+  border-radius: 5px;
+  max-width: 260px;
+  margin: 20px;
+  padding: 20px;
+}

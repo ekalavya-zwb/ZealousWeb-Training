@@ -1,9 +1,12 @@
 const express = require("express");
+const cors = require("cors");
 const con = require("./db.js");
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+app.use(cors({ origin: "http://localhost:5173" }));
+
 app.set("json spaces", 2);
 
 app.get("/", (req, res) => {
@@ -44,24 +47,17 @@ app.get("/api/employees/:id", (req, res) => {
         return res.status(404).json({ error: "Employee not found!" });
       }
       res.status(200).json(result[0]);
-    }
+    },
   );
 });
 
 app.post("/api/employees", (req, res) => {
-  const {
-    first_name,
-    last_name,
-    email,
-    hire_date,
-    salary,
-    dept_id,
-    manager_id,
-  } = req.body;
+  const { first_name, last_name, email, hire_date, salary, dept_id, state } =
+    req.body;
 
   con.query(
-    "INSERT INTO employees (first_name, last_name, email, hire_date, salary, dept_id, manager_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
-    [first_name, last_name, email, hire_date, salary, dept_id, manager_id],
+    "INSERT INTO employees (first_name, last_name, email, hire_date, salary, dept_id, state) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [first_name, last_name, email, hire_date, salary, dept_id, state],
     (error, result) => {
       if (error) {
         return res.status(500).json({ error: error.message });
@@ -69,34 +65,18 @@ app.post("/api/employees", (req, res) => {
       res
         .status(201)
         .json({ message: "Employee inserted!", insertId: result.insertId });
-    }
+    },
   );
 });
 
 app.put("/api/employees/:id", (req, res) => {
   const empId = parseInt(req.params.id);
-  const {
-    first_name,
-    last_name,
-    email,
-    hire_date,
-    salary,
-    dept_id,
-    manager_id,
-  } = req.body;
+  const { first_name, last_name, email, hire_date, salary, dept_id, state } =
+    req.body;
 
   con.query(
-    "UPDATE employees SET first_name = ?, last_name = ?, email = ?, hire_date = ?, salary = ?, dept_id = ?, manager_id = ? WHERE id = ?",
-    [
-      first_name,
-      last_name,
-      email,
-      hire_date,
-      salary,
-      dept_id,
-      manager_id,
-      empId,
-    ],
+    "UPDATE employees SET first_name = ?, last_name = ?, email = ?, hire_date = ?, salary = ?, dept_id = ?, state = ? WHERE id = ?",
+    [first_name, last_name, email, hire_date, salary, dept_id, state, empId],
     (error, result) => {
       if (error) {
         return res.status(500).json({ error: error.message });
@@ -108,7 +88,7 @@ app.put("/api/employees/:id", (req, res) => {
         message: "Employee updated successfully!",
         affectedRows: `# of rows affected: ${result.affectedRows}`,
       });
-    }
+    },
   );
 });
 
