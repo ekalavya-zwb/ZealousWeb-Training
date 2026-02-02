@@ -7,7 +7,7 @@ import "../company/styles/Header.css";
 const Products = () => {
   return (
     <>
-      <h1 style={{ textAlign: "center" }}>Products page</h1>
+      <h1 style={{ margin: "10px" }}>Products page</h1>
       <div className="navbar">
         <Link to="/products/cars">Cars</Link>
         <Link to="/products/bikes">Bikes</Link>

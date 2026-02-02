@@ -24,6 +24,7 @@ import Timer from "./components/Timer";
 import UpdateTitle from "./components/UpdateTitle";
 import WindowResize from "./components/WindowResize";
 import RandomUser from "./components/RandomUser";
+import NavigationBar from "./components/NavigationBar";
 
 function App() {
   return (
@@ -91,6 +92,7 @@ function App() {
       {/* <UpdateTitle /> */}
       {/* <WindowResize /> */}
       {/* <RandomUser /> */}
+      {/* <NavigationBar /> */}
     </>
   );
 }
