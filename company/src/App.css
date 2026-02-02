@@ -7,7 +7,33 @@
 .employee-data {
   border: 1px solid #333;
   border-radius: 5px;
-  max-width: 260px;
+  max-width: 340px;
   margin: 20px;
   padding: 20px;
+}
+
+.employee-data button {
+  padding: 3px 6px;
+  cursor: pointer;
+}
+
+.form-container {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-container button {
+  max-width: fit-content;
+}
+
+.form-container input {
+  padding: 3px;
+  margin-left: 10px;
+}
+
+.form-container button {
+  padding: 3px;
+  cursor: pointer;
 }
