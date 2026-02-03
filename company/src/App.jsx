@@ -12,18 +12,7 @@ function App() {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState(null);
   const [view, setView] = useState("list");
-  const [inputs, setInputs] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    hire_date: "",
-    salary: "",
-    dept_id: "",
-    state: "",
-  });
   const [userId, setUserId] = useState(null);
-
-  const formatDate = (isoStr) => isoStr.split("T")[0];
 
   const emptyForm = {
     first_name: "",
@@ -34,6 +23,10 @@ function App() {
     dept_id: "",
     state: "",
   };
+
+  const [inputs, setInputs] = useState(emptyForm);
+
+  const formatDate = (isoStr) => isoStr.split("T")[0];
 
   const resetForm = () => {
     setInputs(emptyForm);
@@ -70,9 +63,9 @@ function App() {
       inputs.first_name.trim() === "" ||
       inputs.last_name.trim() === "" ||
       inputs.email.trim() === "" ||
-      inputs.salary > 0 ||
+      Number(inputs.salary) <= 0 ||
       inputs.hire_date === "" ||
-      inputs.dept_id > 0 ||
+      Number(inputs.dept_id) <= 0 ||
       inputs.state.trim() === ""
     ) {
       alert("Input fields cannot remain empty!");

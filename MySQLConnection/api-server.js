@@ -33,8 +33,32 @@ app.get("/api/employees", (req, res) => {
   });
 });
 
+app.get("/api/departments", (req, res) => {
+  con.query("SELECT * FROM departments ", (error, result) => {
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+    res.status(200).json(result);
+  });
+});
+
+app.get("/api/employeesDept", (req, res) => {
+  con.query(
+    "SELECT e.id, e.first_name, e.last_name, d.dept_name FROM employees e JOIN departments d ON e.dept_id = d.dept_id",
+    (error, result) => {
+      if (error) {
+        return res.status(500).json({ error: error.message });
+      }
+      res.status(200).json(result);
+    },
+  );
+});
+
 app.get("/api/employees/:id", (req, res) => {
-  const empId = parseInt(req.params.id);
+  const empId = Number(req.params.id);
+  if (Number.isNaN(empId)) {
+    return res.status(400).json({ error: "Invalid employee ID!" });
+  }
 
   con.query(
     "SELECT * FROM employees WHERE id = ?",
@@ -45,6 +69,27 @@ app.get("/api/employees/:id", (req, res) => {
       }
       if (result.length === 0) {
         return res.status(404).json({ error: "Employee not found!" });
+      }
+      res.status(200).json(result[0]);
+    },
+  );
+});
+
+app.get("/api/departments/:id", (req, res) => {
+  const deptId = Number(req.params.id);
+  if (Number.isNaN(deptId)) {
+    return res.status(400).json({ error: "Invalid department ID!" });
+  }
+
+  con.query(
+    "SELECT * FROM departments WHERE dept_id = ?",
+    [deptId],
+    (error, result) => {
+      if (error) {
+        return res.status(500).json({ error: error.message });
+      }
+      if (result.length === 0) {
+        return res.status(404).json({ error: "Department does not exists!" });
       }
       res.status(200).json(result[0]);
     },
@@ -70,7 +115,11 @@ app.post("/api/employees", (req, res) => {
 });
 
 app.put("/api/employees/:id", (req, res) => {
-  const empId = parseInt(req.params.id);
+  const empId = Number(req.params.id);
+  if (Number.isNaN(empId)) {
+    return res.status(400).json({ error: "Invalid employee ID!" });
+  }
+
   const { first_name, last_name, email, hire_date, salary, dept_id, state } =
     req.body;
 
@@ -93,7 +142,10 @@ app.put("/api/employees/:id", (req, res) => {
 });
 
 app.delete("/api/employees/:id", (req, res) => {
-  const empId = parseInt(req.params.id);
+  const empId = Number(req.params.id);
+  if (Number.isNaN(empId)) {
+    return res.status(400).json({ error: "Invalid employee ID!" });
+  }
 
   con.query("DELETE FROM employees WHERE id = ?", [empId], (error, result) => {
     if (error) {
