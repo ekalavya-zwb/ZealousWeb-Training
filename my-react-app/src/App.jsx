@@ -1,11 +1,13 @@
 import { Link, Route, Routes } from "react-router-dom";
+import { useContext } from "react";
+import "./App.css";
+import "./company/styles/Header.css";
 import ConditionalRendering from "./components/ConditionalRendering";
 import EventHandler from "./components/EventHandler";
 import Greetings from "./components/Greetings";
 import Welcome from "./components/Welcome";
 import Dashboard from "./company/Dashboard";
 import Form from "./components/Form";
-import "./company/styles/Header.css";
 import Home from "./basicRouter/Home";
 import About from "./basicRouter/About";
 import Contact from "./basicRouter/Contact";
@@ -25,8 +27,14 @@ import UpdateTitle from "./components/UpdateTitle";
 import WindowResize from "./components/WindowResize";
 import RandomUser from "./components/RandomUser";
 import NavigationBar from "./components/NavigationBar";
+import UseReducerCounter from "./components/UseReducerCounter";
+import UseReducerForm from "./components/UseReducerForm";
+import ThemeToggle from "./components/ThemeToggle";
+import ThemeContext from "./context/ThemeContext";
 
 function App() {
+  // const { theme } = useContext(ThemeContext);
+
   return (
     <>
       {/* <Welcome
@@ -38,7 +46,6 @@ function App() {
       {/* <Greetings /> */}
       {/* <Dashboard /> */}
       {/* <Form /> */}
-
       {/* <div className="navbar">
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
@@ -55,7 +62,6 @@ function App() {
         </Route>
         <Route path="/contact" element={<Contact />} />
       </Routes> */}
-
       {/* <Counter /> */}
       {/* <EmployeeForm /> */}
       {/* <LoginForm /> */}
@@ -93,6 +99,11 @@ function App() {
       {/* <WindowResize /> */}
       {/* <RandomUser /> */}
       {/* <NavigationBar /> */}
+      {/* <UseReducerCounter /> */}
+      {/* <UseReducerForm /> */}
+      {/* <div className={`${theme}Container`}>
+        <ThemeToggle />
+      </div> */}
     </>
   );
 }
