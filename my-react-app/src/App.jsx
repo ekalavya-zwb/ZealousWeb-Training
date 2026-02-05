@@ -123,7 +123,7 @@ function App() {
       {/* <Parent /> */}
       {/* <Formik /> */}
       {/* <YupForm /> */}
-      <ReactHookForm />
+      {/* <ReactHookForm /> */}
     </>
   );
 }
