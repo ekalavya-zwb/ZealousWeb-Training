@@ -1,5 +1,5 @@
 import { Link, Route, Routes } from "react-router-dom";
-import { useContext } from "react";
+// import { useContext } from "react";
 import "./App.css";
 import "./company/styles/Header.css";
 import ConditionalRendering from "./components/ConditionalRendering";
