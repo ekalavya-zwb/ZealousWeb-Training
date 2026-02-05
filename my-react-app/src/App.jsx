@@ -31,6 +31,12 @@ import UseReducerCounter from "./components/UseReducerCounter";
 import UseReducerForm from "./components/UseReducerForm";
 import ThemeToggle from "./components/ThemeToggle";
 import ThemeContext from "./context/ThemeContext";
+import GlobalEmployees from "./components/GlobalEmployees";
+import AddEmployee from "./components/AddEmployee";
+import PageNotFound from "./components/PageNotFound";
+import EditEmployee from "./components/EditEmployee";
+import ExpensiveCalculation from "./components/ExpensiveCalculation";
+import Parent from "./components/Parent";
 
 function App() {
   // const { theme } = useContext(ThemeContext);
@@ -104,6 +110,14 @@ function App() {
       {/* <div className={`${theme}Container`}>
         <ThemeToggle />
       </div> */}
+      {/* <Routes>
+        <Route path="/" element={<GlobalEmployees />}></Route>
+        <Route path="/add" element={<AddEmployee />}></Route>
+        <Route path="/edit/:id" element={<EditEmployee />}></Route>
+        <Route path="*" element={<PageNotFound />}></Route>
+      </Routes> */}
+      {/* <ExpensiveCalculation /> */}
+      {/* <Parent /> */}
     </>
   );
 }
