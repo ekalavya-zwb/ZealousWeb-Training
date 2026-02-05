@@ -12,12 +12,15 @@
   "dependencies": {
     "axios": "^1.13.4",
     "cors": "^2.8.6",
+    "formik": "^2.4.9",
     "prop-types": "^15.8.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.71.1",
     "react-router-dom": "^7.13.0",
     "react-window": "^2.2.6",
-    "react-window-infinite-loader": "^2.0.1"
+    "react-window-infinite-loader": "^2.0.1",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

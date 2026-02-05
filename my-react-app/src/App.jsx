@@ -37,6 +37,9 @@ import PageNotFound from "./components/PageNotFound";
 import EditEmployee from "./components/EditEmployee";
 import ExpensiveCalculation from "./components/ExpensiveCalculation";
 import Parent from "./components/Parent";
+import Formik from "./components/Formik";
+import YupForm from "./components/YupForm";
+import ReactHookForm from "./components/ReactHookForm";
 
 function App() {
   // const { theme } = useContext(ThemeContext);
@@ -118,6 +121,9 @@ function App() {
       </Routes> */}
       {/* <ExpensiveCalculation /> */}
       {/* <Parent /> */}
+      {/* <Formik /> */}
+      {/* <YupForm /> */}
+      {/* <ReactHookForm /> */}
     </>
   );
 }

@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.formContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 20px;
+  margin: 20px auto;
+}
+
+.formContainer h2 {
+  text-align: center;
+}
+
+.formContainer label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.formContainer label span {
+  width: 120px;
+}
+
+.formContainer input,
+select {
+  flex: 1;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.formContainer button {
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.formContainer p {
+  margin-left: 120px;
+  font-size: 14px;
+  color: crimson;
+}
