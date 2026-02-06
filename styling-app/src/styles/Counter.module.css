@@ -1,0 +1,49 @@
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+.countDisplay {
+  font-size: 4rem;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btnContainer button {
+  font-size: 1.5rem;
+  padding: 5px 10px;
+  background-color: mediumpurple;
+  color: white;
+  cursor: pointer;
+}
+
+.errorMsg {
+  font-size: 1.5rem;
+  margin-top: 10px;
+  color: crimson;
+}
+
+.btnContainer .danger {
+  background-color: tomato;
+}
+
+.btnContainer button:disabled {
+  cursor: not-allowed;
+} */
