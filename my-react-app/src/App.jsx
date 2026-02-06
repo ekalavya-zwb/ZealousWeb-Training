@@ -40,6 +40,13 @@ import Parent from "./components/Parent";
 import Formik from "./components/Formik";
 import YupForm from "./components/YupForm";
 import ReactHookForm from "./components/ReactHookForm";
+import FetchDepartments from "./components/FetchDepartments";
+import FetchRoutes from "./components/FetchRoutes";
+import FetchEmployees from "./components/fetchEmployees";
+import ReadRoutes from "./components/ReadRoutes";
+import ReadEmployees from "./components/ReadEmployees";
+import CreateEmployee from "./components/CreateEmployee";
+import UpdateEmployee from "./components/UpdateEmployee";
 
 function App() {
   // const { theme } = useContext(ThemeContext);
@@ -124,6 +131,19 @@ function App() {
       {/* <Formik /> */}
       {/* <YupForm /> */}
       {/* <ReactHookForm /> */}
+      {/* <Routes>
+        <Route path="/" element={<FetchRoutes />}></Route>
+        <Route path="/employees" element={<FetchEmployees />}></Route>
+        <Route path="/departments" element={<FetchDepartments />}></Route>
+        <Route path="*" element={<PageNotFound />}></Route>
+      </Routes> */}
+      {/* <Routes>
+        <Route path="/" element={<ReadRoutes />}></Route>
+        <Route path="/employees" element={<ReadEmployees />}></Route>
+        <Route path="/employees/add" element={<CreateEmployee />}></Route>
+        <Route path="/employees/edit/:id" element={<UpdateEmployee />}></Route>
+        <Route path="*" element={<PageNotFound />}></Route>
+      </Routes> */}
     </>
   );
 }

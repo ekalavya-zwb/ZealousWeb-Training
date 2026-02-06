@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.employeeTable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+
+table th {
+  padding: 5px;
+  text-align: center;
+}
+
+table td {
+  padding: 5px;
+  text-align: center;
+}
+
+.employeeTable button {
+  padding: 4px 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 1.5rem;
+}
+
+.formContainer button {
+  display: flex;
+  margin: 20px auto;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.homepage {
+  margin: 20px;
+}
+
+.homepage h1 {
+  margin-bottom: 10px;
+}
+
+.homepage h3 {
+  margin-bottom: 5px;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.formContainer h2 {
+  text-align: center;
+}
+
+.formContainer label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.formContainer label span {
+  width: 120px;
+}
+
+.formContainer input {
+  flex: 1;
+  padding: 6px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.formContainer button {
+  align-self: center;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
