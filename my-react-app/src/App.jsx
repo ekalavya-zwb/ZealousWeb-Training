@@ -117,7 +117,7 @@ function App() {
       {/* <Timer /> */}
       {/* <UpdateTitle /> */}
       {/* <WindowResize /> */}
-      {/* <RandomUser /> */}
+      <RandomUser />
       {/* <NavigationBar /> */}
       {/* <UseReducerCounter /> */}
       {/* <UseReducerForm /> */}

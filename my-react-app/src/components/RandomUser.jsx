@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/RandomUser.module.css";
+import card from "../assets/placeholder_card.png";
 
 const RandomUser = () => {
   const [user, setUser] = useState(null);
@@ -31,12 +32,7 @@ const RandomUser = () => {
   }, []);
 
   if (loading) {
-    return (
-      <>
-        <p style={{ fontSize: "2rem", textAlign: "center" }}>Loading...</p>
-        <div className={styles.spinner} />
-      </>
-    );
+    return <img src={card} alt="placeholder-card" width={400} />;
   }
 
   if (error) {
