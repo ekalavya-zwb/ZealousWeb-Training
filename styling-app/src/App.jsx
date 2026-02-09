@@ -7,6 +7,7 @@ import ReadEmployees from "./components/ReadEmployees";
 import ReadEmployeesMUI from "./components/ReadEmployeesMUI";
 import CreateEmployee from "./components/CreateEmployee";
 import PageNotFound from "./components/PageNotFound";
+import ReadRoutes from "./components/ReadRoutes";
 
 function App() {
   return (
@@ -23,8 +24,9 @@ function App() {
       </div> */}
       {/* <ReadEmployees /> */}
       <Routes>
-        <Route path="/" element={<ReadEmployeesMUI />}></Route>
-        <Route path="/add" element={<CreateEmployee />}></Route>
+        <Route path="/" element={<ReadRoutes />}></Route>
+        <Route path="/employees" element={<ReadEmployeesMUI />}></Route>
+        <Route path="/employees/add" element={<CreateEmployee />}></Route>
         <Route path="*" element={<PageNotFound />}></Route>
       </Routes>
     </>
