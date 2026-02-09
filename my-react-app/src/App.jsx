@@ -47,6 +47,10 @@ import ReadRoutes from "./components/ReadRoutes";
 import ReadEmployees from "./components/ReadEmployees";
 import CreateEmployee from "./components/CreateEmployee";
 import UpdateEmployee from "./components/UpdateEmployee";
+import Users from "./components/Users";
+import MutationRoutes from "./components/MutationRoutes";
+import AddUser from "./components/AddUser";
+import EditUser from "./components/EditUser";
 
 function App() {
   // const { theme } = useContext(ThemeContext);
@@ -142,6 +146,13 @@ function App() {
         <Route path="/employees" element={<ReadEmployees />}></Route>
         <Route path="/employees/add" element={<CreateEmployee />}></Route>
         <Route path="/employees/edit/:id" element={<UpdateEmployee />}></Route>
+        <Route path="*" element={<PageNotFound />}></Route>
+      </Routes> */}
+      {/* <Routes>
+        <Route path="/" element={<MutationRoutes />}></Route>
+        <Route path="/employees" element={<Users />}></Route>
+        <Route path="/employees/add" element={<AddUser />}></Route>
+        <Route path="/employees/edit/:id" element={<EditUser />}></Route>
         <Route path="*" element={<PageNotFound />}></Route>
       </Routes> */}
     </>
