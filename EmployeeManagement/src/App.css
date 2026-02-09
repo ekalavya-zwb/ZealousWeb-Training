@@ -8,7 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 50px;
+  margin: 20px;
 }
 
 table th {
@@ -41,23 +41,10 @@ table td {
   text-decoration: underline;
 }
 
-.homepage {
-  margin: 20px;
-}
-
-.homepage h1 {
-  margin-bottom: 10px;
-}
-
-.homepage h3 {
-  margin-bottom: 5px;
-}
-
 .loading {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   font-size: 1.5rem;
 }
 
@@ -98,4 +85,31 @@ table td {
   padding: 6px 12px;
   font-size: 14px;
   cursor: pointer;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 20px;
+  padding: 20px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #333;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.navbar a:active {
+  font-weight: bold;
 }
