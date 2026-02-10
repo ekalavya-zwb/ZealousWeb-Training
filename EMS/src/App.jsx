@@ -1,0 +1,27 @@
+import { Routes, Route } from "react-router-dom";
+import "./App.css";
+import AddEmployee from "./components/AddEmployee";
+import EmployeeList from "./components/EmployeeList";
+import Dashboard from "./components/Dashboard";
+import PageNotFound from "./components/PageNotFound";
+import EditEmployee from "./components/EditEmployee";
+import DepartmentList from "./components/DepartmentList";
+import AddDepartment from "./components/AddDepartment";
+
+function App() {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Dashboard />}></Route>
+        <Route path="/employees" element={<EmployeeList />}></Route>
+        <Route path="/departments" element={<DepartmentList />}></Route>
+        <Route path="/employees/add" element={<AddEmployee />}></Route>
+        <Route path="/departments/add" element={<AddDepartment />}></Route>
+        <Route path="/employees/edit/:id" element={<EditEmployee />}></Route>
+        <Route path="*" element={<PageNotFound />}></Route>
+      </Routes>
+    </>
+  );
+}
+
+export default App;

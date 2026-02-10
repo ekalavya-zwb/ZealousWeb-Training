@@ -114,6 +114,23 @@ app.post("/api/employees", (req, res) => {
   );
 });
 
+app.post("/api/departments", (req, res) => {
+  const { dept_name, location } = req.body;
+
+  con.query(
+    "INSERT INTO departments (dept_name, location) VALUES (?, ?)",
+    [dept_name, location],
+    (error, result) => {
+      if (error) {
+        return res.status(500).json({ error: error.message });
+      }
+      res
+        .status(201)
+        .json({ message: "Department inserted!", insertId: result.insertId });
+    },
+  );
+});
+
 app.put("/api/employees/:id", (req, res) => {
   const empId = Number(req.params.id);
   if (Number.isNaN(empId)) {
@@ -159,6 +176,30 @@ app.delete("/api/employees/:id", (req, res) => {
       affectedRows: `# of rows affected: ${result.affectedRows}`,
     });
   });
+});
+
+app.delete("/api/departments/:id", (req, res) => {
+  const deptId = Number(req.params.id);
+  if (Number.isNaN(deptId)) {
+    return res.status(400).json({ error: "Invalid department ID!" });
+  }
+
+  con.query(
+    "DELETE FROM departments WHERE id = ?",
+    [deptId],
+    (error, result) => {
+      if (error) {
+        return res.status(500).json({ error: error.message });
+      }
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Department does not exist!" });
+      }
+      res.status(200).json({
+        message: "Department removed successfully!",
+        affectedRows: `# of rows affected: ${result.affectedRows}`,
+      });
+    },
+  );
 });
 
 app.use((req, res) => {
