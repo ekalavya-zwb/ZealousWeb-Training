@@ -185,7 +185,7 @@ app.delete("/api/departments/:id", (req, res) => {
   }
 
   con.query(
-    "DELETE FROM departments WHERE id = ?",
+    "DELETE FROM departments WHERE dept_id = ?",
     [deptId],
     (error, result) => {
       if (error) {
