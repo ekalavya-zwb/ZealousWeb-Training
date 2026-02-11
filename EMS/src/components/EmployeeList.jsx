@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import {
   Table,
@@ -14,6 +15,7 @@ import {
   MenuItem,
   FormControl,
   Select,
+  Box,
 } from "@mui/material";
 
 const EmployeeList = () => {
@@ -48,67 +50,61 @@ const EmployeeList = () => {
       });
 
       if (!res.ok) {
-        throw new Error(`Request failed: ${res.status}`);
+        throw new Error(`Request failed with status ${res.status}`);
       }
 
       return res.json();
     },
   });
 
-  const newData = React.useMemo(() => {
-    return data.filter((employee) => {
-      const {
-        first_name,
-        last_name,
-        email,
-        salaryMin,
-        salaryMax,
-        hireDateFrom,
-        hireDateTo,
-        dept_id,
-        state,
-      } = filters;
+  const newData = data.filter((employee) => {
+    const {
+      first_name,
+      last_name,
+      email,
+      salaryMin,
+      salaryMax,
+      hireDateFrom,
+      hireDateTo,
+      dept_id,
+      state,
+    } = filters;
 
-      if (
-        first_name &&
-        !employee.first_name
-          .toLowerCase()
-          .includes(first_name.toLowerCase().trim())
-      )
-        return false;
+    if (
+      first_name &&
+      !employee.first_name
+        .toLowerCase()
+        .includes(first_name.toLowerCase().trim())
+    )
+      return false;
 
-      if (
-        last_name &&
-        !employee.last_name
-          .toLowerCase()
-          .includes(last_name.toLowerCase().trim())
-      )
-        return false;
+    if (
+      last_name &&
+      !employee.last_name.toLowerCase().includes(last_name.toLowerCase().trim())
+    )
+      return false;
 
-      if (
-        email &&
-        !employee.email.toLowerCase().includes(email.toLowerCase().trim())
-      )
-        return false;
+    if (
+      email &&
+      !employee.email.toLowerCase().includes(email.toLowerCase().trim())
+    )
+      return false;
 
-      if (salaryMin && Number(employee.salary) < Number(salaryMin))
-        return false;
-      if (salaryMax && Number(employee.salary) > Number(salaryMax))
-        return false;
+    if (salaryMin && Number(employee.salary) < Number(salaryMin)) return false;
+    if (salaryMax && Number(employee.salary) > Number(salaryMax)) return false;
 
-      if (hireDateFrom && new Date(employee.hire_date) < new Date(hireDateFrom))
-        return false;
-      if (hireDateTo && new Date(employee.hire_date) > new Date(hireDateTo))
-        return false;
+    if (hireDateFrom && new Date(employee.hire_date) < new Date(hireDateFrom))
+      return false;
+    if (hireDateTo && new Date(employee.hire_date) > new Date(hireDateTo))
+      return false;
 
-      if (dept_id && Number(employee.dept_id) !== Number(dept_id)) return false;
+    if (dept_id && Number(employee.dept_id) !== Number(dept_id)) return false;
 
-      if (state && employee.state.toLowerCase() !== state.toLowerCase())
-        return false;
+    if (state && employee.state.toLowerCase() !== state.toLowerCase())
+      return false;
 
-      return true;
-    });
-  }, [data, filters]);
+    return true;
+  });
 
   const deleteMutation = useMutation({
     mutationFn: async (employeeId) => {
@@ -116,11 +112,13 @@ const EmployeeList = () => {
         method: "DELETE",
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        throw new Error(`Failed to delete Employee: ${res.status}`);
+        throw new Error(data.error || "Failed to delete Employee.");
       }
 
-      return res.json();
+      return data;
     },
 
     onSuccess: (deletedEmployee) => {
@@ -156,155 +154,123 @@ const EmployeeList = () => {
 
   return (
     <>
-      <Table>
-        <TableHead
-          sx={{
-            position: "sticky",
-            top: 0,
-            backgroundColor: "white",
-            zIndex: 2,
-          }}
+      <Box sx={{ mb: 2 }}>
+        <Stack
+          direction="row"
+          spacing={3}
+          useFlexGap
+          flexWrap="wrap"
+          justifyContent="center"
+          alignItems="center"
         >
-          <TableRow>
-            <TableCell>
-              <Typography variant="subtitle2"> First Name</Typography>
-              <TextField
-                size="small"
-                fullWidth
-                placeholder="John"
-                value={filters.first_name}
-                onChange={(event) =>
-                  updateFilters("first_name", event.target.value)
-                }
-              />
-            </TableCell>
-            <TableCell>
-              <Typography variant="subtitle2"> Last Name</Typography>
-              <TextField
-                size="small"
-                fullWidth
-                placeholder="Doe"
-                value={filters.last_name}
-                onChange={(event) =>
-                  updateFilters("last_name", event.target.value)
-                }
-              />
-            </TableCell>
-            <TableCell>
-              <Typography variant="subtitle2"> Email</Typography>
-              <TextField
-                size="small"
-                fullWidth
-                placeholder="john.doe@company.com"
-                value={filters.email}
-                onChange={(event) => updateFilters("email", event.target.value)}
-              />
-            </TableCell>
-            <TableCell>
-              <Typography variant="subtitle2"> Salary</Typography>
-              <Stack direction="row" spacing={1}>
-                <TextField
-                  size="small"
-                  type="number"
-                  placeholder="Min"
-                  value={filters.salaryMin}
-                  onChange={(event) =>
-                    updateFilters("salaryMin", event.target.value)
-                  }
-                />
-                <TextField
-                  size="small"
-                  type="number"
-                  placeholder="Max"
-                  value={filters.salaryMax}
-                  onChange={(event) =>
-                    updateFilters("salaryMax", event.target.value)
-                  }
-                />
-              </Stack>
-            </TableCell>
-            <TableCell>
-              <Typography variant="subtitle2"> Hire Date</Typography>
-              <Stack direction="row" spacing={1}>
-                <TextField
-                  size="small"
-                  type="date"
-                  value={filters.hireDateFrom}
-                  onChange={(event) =>
-                    updateFilters("hireDateFrom", event.target.value)
-                  }
-                />
-                <TextField
-                  size="small"
-                  type="date"
-                  value={filters.hireDateTo}
-                  onChange={(event) =>
-                    updateFilters("hireDateTo", event.target.value)
-                  }
-                />
-              </Stack>
-            </TableCell>
-            <TableCell>
-              <Typography variant="subtitle2">Dept ID</Typography>
-              <TextField
-                size="small"
-                type="number"
-                placeholder="1"
-                value={filters.dept_id}
-                onChange={(event) =>
-                  updateFilters("dept_id", event.target.value)
-                }
-                style={{ width: 60 }}
-              />
-            </TableCell>
-            <TableCell>
-              <Typography variant="subtitle2">Status</Typography>
-              <FormControl size="small" fullWidth>
-                <Select
-                  displayEmpty
-                  value={filters.state}
-                  onChange={(event) =>
-                    updateFilters("state", event.target.value)
-                  }
-                >
-                  <MenuItem value="">All</MenuItem>
-                  <MenuItem value="OnProject">OnProject</MenuItem>
-                  <MenuItem value="Active">Active</MenuItem>
-                  <MenuItem value="OnBoarded">OnBoarded</MenuItem>
-                  <MenuItem value="Terminated">Terminated</MenuItem>
-                </Select>
-              </FormControl>
-            </TableCell>
-            <TableCell>
-              <Button
-                variant="contained"
-                color="warning"
-                size="small"
-                sx={{ mt: 2.5, height: 35 }}
-                onClick={() => setFilters(emptyFilters)}
-              >
-                Clear
-              </Button>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-      </Table>
+          <TextField
+            size="small"
+            label="First Name"
+            sx={{ width: 170 }}
+            value={filters.first_name}
+            onChange={(e) => updateFilters("first_name", e.target.value)}
+          />
+
+          <TextField
+            size="small"
+            label="Last Name"
+            sx={{ width: 170 }}
+            value={filters.last_name}
+            onChange={(e) => updateFilters("last_name", e.target.value)}
+          />
+
+          <TextField
+            size="small"
+            label="Email"
+            sx={{ width: 190 }}
+            value={filters.email}
+            onChange={(e) => updateFilters("email", e.target.value)}
+          />
+          <Stack direction="row" spacing={1}>
+            <TextField
+              size="small"
+              type="number"
+              label="Min Salary"
+              sx={{ width: 120 }}
+              value={filters.salaryMin}
+              onChange={(e) => updateFilters("salaryMin", e.target.value)}
+            />
+            <TextField
+              size="small"
+              type="number"
+              label="Max Salary"
+              sx={{ width: 120 }}
+              value={filters.salaryMax}
+              onChange={(e) => updateFilters("salaryMax", e.target.value)}
+            />
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <TextField
+              size="small"
+              type="date"
+              label="From"
+              InputLabelProps={{ shrink: true }}
+              sx={{ width: 160 }}
+              value={filters.hireDateFrom}
+              onChange={(e) => updateFilters("hireDateFrom", e.target.value)}
+            />
+            <TextField
+              size="small"
+              type="date"
+              label="To"
+              InputLabelProps={{ shrink: true }}
+              sx={{ width: 160 }}
+              value={filters.hireDateTo}
+              onChange={(e) => updateFilters("hireDateTo", e.target.value)}
+            />
+          </Stack>
+          <TextField
+            size="small"
+            type="number"
+            label="Dept ID"
+            sx={{ width: 100 }}
+            value={filters.dept_id}
+            onChange={(e) => updateFilters("dept_id", e.target.value)}
+          />
+          <FormControl size="small" sx={{ width: 160 }}>
+            <Select
+              displayEmpty
+              value={filters.state}
+              onChange={(e) => updateFilters("state", e.target.value)}
+            >
+              <MenuItem value="">All Status</MenuItem>
+              <MenuItem value="OnProject">OnProject</MenuItem>
+              <MenuItem value="Active">Active</MenuItem>
+              <MenuItem value="OnBoarded">OnBoarded</MenuItem>
+              <MenuItem value="Terminated">Terminated</MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            variant="contained"
+            color="error"
+            sx={{ height: 40 }}
+            onClick={() => setFilters(emptyFilters)}
+          >
+            Clear
+          </Button>
+        </Stack>
+      </Box>
 
       {deleteMutation.isError && (
-        <Typography color="error" align="center" mt={2}>
+        <Typography color="error" align="center">
           {deleteMutation.error.message}
         </Typography>
       )}
 
       {data.length === 0 && (
-        <Typography align="center" mt={3}>
+        <Typography align="center" color="error">
           No employees found.
         </Typography>
       )}
 
       {newData.length === 0 && (
-        <Typography align="center" mt={3}>
-          No employees match your filters.
+        <Typography align="center" color="error">
+          No employee match your filters.
         </Typography>
       )}
 
@@ -326,7 +292,7 @@ const EmployeeList = () => {
             <TableCell>Hire Date</TableCell>
             <TableCell>Department ID</TableCell>
             <TableCell>Status</TableCell>
-            <TableCell>Action</TableCell>
+            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -350,6 +316,15 @@ const EmployeeList = () => {
                   disabled={deleteMutation.isLoading}
                 >
                   {deleteMutation.isLoading ? "Deleting..." : "Delete"}
+                </Button>
+                <Button
+                  component={NavLink}
+                  to={`/employees/edit/${employee.id}`}
+                  variant="contained"
+                  color="warning"
+                  sx={{ ml: 1 }}
+                >
+                  Edit
                 </Button>
               </TableCell>
             </TableRow>

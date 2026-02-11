@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Card,
-  Stack,
-  Divider,
-  Alert,
-} from "@mui/material";
+import { Box, Button, TextField, Typography, Alert } from "@mui/material";
 
 const AddDepartment = () => {
   const queryClient = useQueryClient();
@@ -35,16 +26,16 @@ const AddDepartment = () => {
       });
 
       if (!res.ok) {
-        throw new Error(`Failed to create Department: ${res.status}`);
+        throw new Error("Failed to create Department.");
       }
 
       return res.json();
     },
 
-    onSuccess: (createdDepartment) => {
+    onSuccess: (createdDepartmentMsg) => {
       queryClient.invalidateQueries(["departments"]);
       setInputs(emptyForm);
-      console.log(createdDepartment);
+      console.log(createdDepartmentMsg);
       navigate("/departments");
     },
   });

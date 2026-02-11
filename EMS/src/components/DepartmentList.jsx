@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import {
   Table,
@@ -11,6 +12,7 @@ import {
   Button,
   TextField,
   Stack,
+  Box,
 } from "@mui/material";
 
 const DepartmentList = () => {
@@ -39,39 +41,34 @@ const DepartmentList = () => {
       });
 
       if (!res.ok) {
-        throw new Error(`Request failed: ${res.status}`);
+        throw new Error(`Request failed with status ${res.status}`);
       }
 
       return res.json();
     },
   });
 
-  const newData = React.useMemo(() => {
-    return data.filter((department) => {
-      const { dept_id, dept_name, location } = filters;
+  const newData = data.filter((department) => {
+    const { dept_id, dept_name, location } = filters;
 
-      if (
-        dept_name &&
-        !department.dept_name
-          .toLowerCase()
-          .includes(dept_name.toLowerCase().trim())
-      )
-        return false;
+    if (
+      dept_name &&
+      !department.dept_name
+        .toLowerCase()
+        .includes(dept_name.toLowerCase().trim())
+    )
+      return false;
 
-      if (
-        location &&
-        !department.location
-          .toLowerCase()
-          .includes(location.toLowerCase().trim())
-      )
-        return false;
+    if (
+      location &&
+      !department.location.toLowerCase().includes(location.toLowerCase().trim())
+    )
+      return false;
 
-      if (dept_id && Number(department.dept_id) !== Number(dept_id))
-        return false;
+    if (dept_id && Number(department.dept_id) !== Number(dept_id)) return false;
 
-      return true;
-    });
-  }, [data, filters]);
+    return true;
+  });
 
   const deleteMutation = useMutation({
     mutationFn: async (deptId) => {
@@ -79,11 +76,13 @@ const DepartmentList = () => {
         method: "DELETE",
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        throw new Error(`Failed to delete Department: ${res.status}`);
+        throw new Error(data.error || "Failed to delete Department.");
       }
 
-      return res.json();
+      return data;
     },
 
     onSuccess: (deletedDepartment) => {
@@ -116,83 +115,64 @@ const DepartmentList = () => {
 
   return (
     <>
-      <Table>
-        <TableHead
-          sx={{
-            position: "sticky",
-            top: 0,
-            backgroundColor: "white",
-            zIndex: 2,
-          }}
+      <Box sx={{ mb: 2 }}>
+        <Stack
+          direction="row"
+          spacing={4}
+          justifyContent="center"
+          alignItems="center"
         >
-          <TableRow>
-            <TableCell>
-              <Typography variant="subtitle2">Dept ID</Typography>
-              <TextField
-                size="small"
-                type="number"
-                fullWidth
-                placeholder="1"
-                value={filters.dept_id}
-                onChange={(event) =>
-                  updateFilters("dept_id", event.target.value)
-                }
-                style={{ width: 60 }}
-              />
-            </TableCell>
-            <TableCell>
-              <Typography variant="subtitle2"> Department</Typography>
-              <TextField
-                size="small"
-                fullWidth
-                placeholder="Engineering"
-                value={filters.dept_name}
-                onChange={(event) =>
-                  updateFilters("dept_name", event.target.value)
-                }
-              />
-            </TableCell>
-            <TableCell>
-              <Typography variant="subtitle2"> Location</Typography>
-              <TextField
-                size="small"
-                fullWidth
-                placeholder="New York"
-                value={filters.location}
-                onChange={(event) =>
-                  updateFilters("location", event.target.value)
-                }
-              />
-            </TableCell>
-            <TableCell>
-              <Button
-                variant="contained"
-                color="warning"
-                size="small"
-                sx={{ mt: 2.5, height: 35 }}
-                onClick={() => setFilters(emptyFilters)}
-              >
-                Clear
-              </Button>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-      </Table>
+          <TextField
+            size="small"
+            type="number"
+            label="Dept ID"
+            value={filters.dept_id}
+            onChange={(event) => updateFilters("dept_id", event.target.value)}
+            sx={{ width: 100 }}
+          />
+
+          <TextField
+            size="small"
+            label="Department"
+            value={filters.dept_name}
+            onChange={(event) => updateFilters("dept_name", event.target.value)}
+            sx={{ width: 220 }}
+          />
+
+          <TextField
+            size="small"
+            label="Location"
+            value={filters.location}
+            onChange={(event) => updateFilters("location", event.target.value)}
+            sx={{ width: 220 }}
+          />
+
+          <Button
+            variant="contained"
+            color="warning"
+            size="medium"
+            sx={{ height: 40 }}
+            onClick={() => setFilters(emptyFilters)}
+          >
+            Clear
+          </Button>
+        </Stack>
+      </Box>
 
       {deleteMutation.isError && (
-        <Typography color="error" align="center" mt={2}>
+        <Typography color="error" align="center">
           {deleteMutation.error.message}
         </Typography>
       )}
 
       {data.length === 0 && (
-        <Typography align="center" mt={3}>
+        <Typography align="center" color="error">
           Departments does not exist.
         </Typography>
       )}
 
       {newData.length === 0 && (
-        <Typography align="center" mt={3}>
+        <Typography align="center" color="error">
           No department match your filters.
         </Typography>
       )}
@@ -210,7 +190,7 @@ const DepartmentList = () => {
             <TableCell>Department ID</TableCell>
             <TableCell>Department</TableCell>
             <TableCell>Location</TableCell>
-            <TableCell>Action</TableCell>
+            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -227,6 +207,15 @@ const DepartmentList = () => {
                   disabled={deleteMutation.isLoading}
                 >
                   {deleteMutation.isLoading ? "Deleting..." : "Delete"}
+                </Button>
+                <Button
+                  component={NavLink}
+                  to={`/departments/edit/${department.dept_id}`}
+                  variant="contained"
+                  color="warning"
+                  sx={{ ml: 1 }}
+                >
+                  Edit
                 </Button>
               </TableCell>
             </TableRow>

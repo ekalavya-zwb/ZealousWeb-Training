@@ -37,11 +37,15 @@ const EditEmployee = () => {
         cache: "no-store",
       });
 
+      const result = await res.json();
+
       if (!res.ok) {
-        throw new Error(`Request failed: ${res.status}`);
+        throw new Error(
+          result.error || `Request failed with status ${res.status}`,
+        );
       }
 
-      return res.json();
+      return result;
     },
   });
 
@@ -61,11 +65,13 @@ const EditEmployee = () => {
         body: JSON.stringify(updatedEmployee),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        throw new Error(`Failed to update Employee: ${res.status}`);
+        throw new Error(data.error || "Failed to update Employee.");
       }
 
-      return res.json();
+      return data;
     },
     onSuccess: (updatedEmployee) => {
       queryClient.invalidateQueries(["employees"]);

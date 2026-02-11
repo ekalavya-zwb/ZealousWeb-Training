@@ -54,16 +54,16 @@ const AddEmployee = () => {
       });
 
       if (!res.ok) {
-        throw new Error(`Failed to create Employee: ${res.status}`);
+        throw new Error("Failed to create Employee.");
       }
 
       return res.json();
     },
 
-    onSuccess: (createdEmployee) => {
+    onSuccess: (createdEmployeeMsg) => {
       queryClient.invalidateQueries(["employees"]);
       setInputs(emptyForm);
-      console.log(createdEmployee);
+      console.log(createdEmployeeMsg);
       navigate("/employees");
     },
   });
