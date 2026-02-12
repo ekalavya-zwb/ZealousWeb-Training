@@ -3,37 +3,44 @@ import { Grid, Paper, Typography, Box } from "@mui/material";
 
 const StatsSection = ({ title, stats }) => {
   return (
-    <>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h6" fontWeight={600} mb={2}>
-          {title}
-        </Typography>
+    <Paper
+      elevation={1}
+      sx={{
+        p: 3,
+        mb: 5,
+        borderRadius: 4,
+        border: "1px solid",
+        borderColor: "divider",
+        backgroundColor: "grey.50",
+      }}
+    >
+      <Typography variant="h6" fontWeight={600} mb={3}>
+        {title}
+      </Typography>
 
-        <Grid container spacing={3}>
-          {stats.map((item, index) => (
-            <Grid size={{ lg: 2 }} key={index}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 2,
-                  borderRadius: 3,
-                  textAlign: "center",
-                  border: "1px solid #999",
-                }}
-              >
-                <Typography variant="subtitle1" color="text.secondary">
-                  {item.label}
-                </Typography>
+      <Grid container spacing={3}>
+        {stats.map((item, index) => (
+          <Grid size={{ lg: 2 }} key={index}>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 3,
+                backgroundColor: "grey.50",
+                textAlign: "center",
+              }}
+            >
+              <Typography variant="body2" color="text.secondary">
+                {item.label}
+              </Typography>
 
-                <Typography variant="h5" fontWeight={700} sx={{ mt: 1 }}>
-                  {item.value}
-                </Typography>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    </>
+              <Typography variant="h5" fontWeight={700} sx={{ mt: 1 }}>
+                {item.value}
+              </Typography>
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
+    </Paper>
   );
 };
 

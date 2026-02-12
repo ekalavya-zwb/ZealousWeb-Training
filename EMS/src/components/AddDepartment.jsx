@@ -75,7 +75,7 @@ const AddDepartment = () => {
       <Box
         component="form"
         onSubmit={handleCreateDept}
-        sx={{ maxWidth: 500, mx: "auto", mt: 4 }}
+        sx={{ maxWidth: 500, mx: "auto" }}
       >
         <Typography variant="h4" gutterBottom align="center">
           Create Department

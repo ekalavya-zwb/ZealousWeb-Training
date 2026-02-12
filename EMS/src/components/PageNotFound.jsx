@@ -9,25 +9,27 @@ const PageNotFound = () => {
     <>
       <Box
         sx={{
+          minHeight: "85vh",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
         }}
       >
-        <Stack spacing={1}>
+        <Stack spacing={0}>
           <Typography variant="h1" fontWeight={700}>
             404
           </Typography>
-          <Typography variant="h5" color="textSecondary">
+          <Typography variant="h5" color="text.secondary">
             Page Not Found
           </Typography>
-          <Typography variant="body1" color="textSecondary">
+          <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
             The page you are looking for doesn’t exist or has been moved.
           </Typography>
           <Button
             variant="contained"
             size="large"
+            sx={{ mt: 3 }}
             onClick={() => navigate("/")}
           >
             Go Back Home

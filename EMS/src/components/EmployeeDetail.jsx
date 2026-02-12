@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   CircularProgress,
@@ -8,6 +9,8 @@ import {
   Box,
   Card,
   Divider,
+  Alert,
+  Button,
 } from "@mui/material";
 
 const Row = ({ label, value }) => (
@@ -27,19 +30,17 @@ const EmployeeDetail = () => {
   const { id } = useParams();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["employeeDetail", id],
+    queryKey: ["employeeView", id],
     enabled: !!id,
     queryFn: async () => {
-      const res = await fetch(`/api/employeeDetail/${id}`, {
+      const res = await fetch(`/api/employees/view/${id}`, {
         cache: "no-store",
       });
 
       const result = await res.json();
 
       if (!res.ok) {
-        throw new Error(
-          result.error || `Request failed with status ${res.status}`,
-        );
+        throw new Error("Failed to load employee.");
       }
 
       return result;
@@ -51,7 +52,7 @@ const EmployeeDetail = () => {
 
   if (isLoading) {
     return (
-      <Typography align="center" mt={3}>
+      <Typography align="center" fontWeight={600}>
         Loading Employee...
         <CircularProgress sx={{ display: "block", mx: "auto", mt: 2 }} />
       </Typography>
@@ -59,41 +60,44 @@ const EmployeeDetail = () => {
   }
   if (error) {
     return (
-      <Typography color="error" align="center" mt={3}>
-        {error.message}
-      </Typography>
+      <Alert severity="error">
+        <Typography fontWeight={600}>{error.message}</Typography>
+      </Alert>
     );
   }
 
   return (
     <>
-      {data.length === 0 && (
-        <Typography align="center" color="error">
-          No employees found.
-        </Typography>
-      )}
-
-      <Card sx={{ maxWidth: 500, mx: "auto", p: 3, mt: 4 }}>
+      <Card sx={{ maxWidth: 500, mx: "auto", p: 3 }}>
         <Typography variant="h4" gutterBottom align="center">
           Employee Details
         </Typography>
         <Divider sx={{ my: 2 }} />
-        {data.map((employee) => (
-          <Stack spacing={1.5} key={employee.id}>
-            <Row
-              label="Full Name"
-              value={`${employee.first_name} ${employee.last_name}`}
-            />
-            <Row label="Email" value={employee.email} />
-            <Row
-              label="Salary"
-              value={`$${roundSalary(Number(employee.salary)).toLocaleString()}`}
-            />
-            <Row label="Hire Date" value={formatDate(employee.hire_date)} />
-            <Row label="Department" value={employee.dept_name} />
-            <Row label="Status" value={employee.state} />
-          </Stack>
-        ))}
+        <Stack spacing={1.5}>
+          <Row
+            label="Full Name"
+            value={`${data.first_name} ${data.last_name}`}
+          />
+          <Row label="Email" value={data.email} />
+          <Row
+            label="Salary"
+            value={`$${roundSalary(Number(data.salary)).toLocaleString()}`}
+          />
+          <Row label="Hire Date" value={formatDate(data.hire_date)} />
+          <Row label="Department" value={data.dept_name} />
+          <Row label="Status" value={data.state} />
+        </Stack>
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
+          component={NavLink}
+          to={`/employees/assign/${data.id}`}
+          disabled={data.state !== "ACTIVE"}
+        >
+          Assign Employee
+        </Button>
       </Card>
     </>
   );

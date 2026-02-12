@@ -3,10 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import StatsSection from "./StatsSection";
 import {
   Container,
-  Grid,
-  Paper,
   Typography,
   CircularProgress,
+  Grid,
+  Paper,
 } from "@mui/material";
 
 const Dashboard = () => {
@@ -41,6 +41,15 @@ const Dashboard = () => {
       </Typography>
     );
   }
+
+  const primaryStats = [
+    { label: "Total Employees", value: data.totalEmployees },
+    { label: "Total Departments", value: data.totalDepartments },
+    {
+      label: "Avg Salary",
+      value: `$${Number(data.avgSalary).toLocaleString()}`,
+    },
+  ];
 
   const employeeStats = [
     { label: "Total Employees", value: data.totalEmployees },
@@ -84,9 +93,32 @@ const Dashboard = () => {
   return (
     <>
       <Container maxWidth="xl" sx={{ py: 4 }}>
-        <Typography variant="h4" fontWeight={600} align="center" gutterBottom>
+        <Typography variant="h4" fontWeight={700} mb={4}>
           Dashboard
         </Typography>
+
+        <Grid container spacing={3} mb={5}>
+          {primaryStats.map((item, index) => (
+            <Grid size={{ xs: 12, sm: 4 }} key={index}>
+              <Paper
+                elevation={3}
+                sx={{
+                  p: 3,
+                  borderRadius: 4,
+                  textAlign: "center",
+                  backgroundColor: "grey.100",
+                }}
+              >
+                <Typography variant="subtitle2">{item.label}</Typography>
+
+                <Typography variant="h4" fontWeight={700} mt={1}>
+                  {item.value}
+                </Typography>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+
         <StatsSection title="Employee Statistics" stats={employeeStats} />
         <StatsSection title="Department Statistics" stats={departmentStats} />
         <StatsSection title="Salary Statistics" stats={salaryStats} />

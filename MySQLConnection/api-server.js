@@ -9,7 +9,7 @@ app.use(cors({ origin: "http://localhost:5173" }));
 app.set("json spaces", 2);
 
 app.get("/", (req, res) => {
-  res.json({
+  res.status(200).json({
     message: "Welcome to the API",
     employees: "/api/employees",
     departments: "/api/departments",
@@ -19,9 +19,10 @@ app.get("/", (req, res) => {
 app.get("/api/employees", async (req, res) => {
   try {
     const [rows] = await con.query("SELECT * FROM employees");
-    res.json(rows);
+    res.status(200).json(rows);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(`GET /api/employees error:`, error);
+    res.status(500).json({ message: "Failed to retrieve employees" });
   }
 });
 
@@ -40,9 +41,36 @@ app.get("/api/employees/:id", async (req, res) => {
       return res.status(404).json({ message: "Employee not found" });
     }
 
-    res.json(rows[0]);
+    res.status(200).json(rows[0]);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(`GET /api/employees/${empId} error:`, error);
+    res.status(500).json({ message: "Failed to retrieve employee" });
+  }
+});
+
+app.get("/api/employees/view/:id", async (req, res) => {
+  try {
+    const empId = Number(req.params.id);
+    if (Number.isNaN(empId)) {
+      return res.status(400).json({ message: "Invalid employee ID" });
+    }
+
+    const [rows] = await con.query(
+      `SELECT e.id, e.first_name, e.last_name, e.email, e.hire_date, e.salary, d.dept_name, e.state
+      FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE id = ?`,
+      [empId],
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    res.status(200).json(rows[0]);
+  } catch (error) {
+    console.error(`GET /api/employees/view/${empId} error:`, error);
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve employee information" });
   }
 });
 
@@ -61,7 +89,8 @@ app.post("/api/employees", async (req, res) => {
       insertId: result.insertId,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(`POST /api/employees error:`, error);
+    res.status(500).json({ message: "Failed to create employee" });
   }
 });
 
@@ -84,9 +113,10 @@ app.put("/api/employees/:id", async (req, res) => {
       return res.status(404).json({ message: "Employee not found" });
     }
 
-    res.json({ message: "Employee updated successfully" });
+    res.status(200).json({ message: "Employee updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(`PUT /api/employees/${empId} error:`, error);
+    res.status(500).json({ message: "Failed to update employee" });
   }
 });
 
@@ -105,18 +135,20 @@ app.delete("/api/employees/:id", async (req, res) => {
       return res.status(404).json({ message: "Employee not found" });
     }
 
-    res.json({ message: "Employee deleted successfully" });
+    res.status(200).json({ message: "Employee deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(`DELETE /api/employees/${empId} error:`, error);
+    res.status(500).json({ message: "Failed to delete employee" });
   }
 });
 
 app.get("/api/departments", async (req, res) => {
   try {
     const [rows] = await con.query("SELECT * FROM departments");
-    res.json(rows);
+    res.status(200).json(rows);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("GET /api/departments error:", error);
+    res.status(500).json({ message: "Failed to retrieve departments" });
   }
 });
 
@@ -136,9 +168,10 @@ app.get("/api/departments/:id", async (req, res) => {
       return res.status(404).json({ message: "Department not found" });
     }
 
-    res.json(rows[0]);
+    res.status(200).json(rows[0]);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(`GET /api/departments/${deptId} error:`, error);
+    res.status(500).json({ message: "Failed to retrieve department" });
   }
 });
 
@@ -156,7 +189,8 @@ app.post("/api/departments", async (req, res) => {
       insertId: result.insertId,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(`POST /api/departments error:`, error);
+    res.status(500).json({ message: "Failed to create department" });
   }
 });
 
@@ -178,9 +212,10 @@ app.put("/api/departments/:id", async (req, res) => {
       return res.status(404).json({ message: "Department not found" });
     }
 
-    res.json({ message: "Department updated successfully" });
+    res.status(200).json({ message: "Department updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(`PUT /api/departments/${deptId} error:`, error);
+    res.status(500).json({ message: "Failed to update department" });
   }
 });
 
@@ -200,9 +235,43 @@ app.delete("/api/departments/:id", async (req, res) => {
       return res.status(404).json({ message: "Department not found" });
     }
 
-    res.json({ message: "Department deleted successfully" });
+    res.status(200).json({ message: "Department deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(`DELETE /api/departments/${deptId} error:`, error);
+    res.status(500).json({ message: "Failed to delete department" });
+  }
+});
+
+app.post("/api/employees/assign/:id", async (req, res) => {
+  try {
+    const empId = Number(req.params.id);
+    if (Number.isNaN(empId)) {
+      return res.status(400).json({ message: "Invalid employee ID" });
+    }
+
+    const { project_id, hours_worked, role } = req.body;
+
+    const [result] = await con.query(
+      "INSERT INTO employee_projects (emp_id, project_id, hours_worked, role) VALUES (?, ?, ?, ?)",
+      [empId, project_id, hours_worked, role],
+    );
+
+    res.status(201).json({
+      message: "Employee assigned successfully",
+    });
+  } catch (error) {
+    console.error(`POST /api/employees/assign/${empId} error:`, error);
+    res.status(500).json({ message: "Failed to assign employee" });
+  }
+});
+
+app.get("/api/projects", async (req, res) => {
+  try {
+    const [rows] = await con.query("SELECT * FROM projects");
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(`GET /api/projects error:`, error);
+    res.status(500).json({ message: "Failed to retrieve projects" });
   }
 });
 
@@ -268,7 +337,7 @@ app.get("/api/dashboard", async (req, res) => {
       "SELECT AVG(salary) AS avgSalHR FROM employees WHERE dept_id = 4",
     );
 
-    res.json({
+    res.status(200).json({
       totalEmployees: empRows[0].total,
       totalDepartments: deptRows[0].total,
       avgSalary: Math.round(salaryRows[0].average),

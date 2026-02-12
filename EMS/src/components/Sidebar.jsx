@@ -8,15 +8,19 @@ import {
   Toolbar,
   Typography,
   Box,
+  Divider,
 } from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PeopleIcon from "@mui/icons-material/People";
+import BusinessIcon from "@mui/icons-material/Business";
 
 const drawerWidth = 240;
 
 const Sidebar = () => {
   const menuItems = [
-    { text: "Dashboard", path: "/" },
-    { text: "Employees", path: "/employees" },
-    { text: "Departments", path: "/departments" },
+    { text: "Dashboard", path: "/", icon: <DashboardIcon /> },
+    { text: "Employees", path: "/employees", icon: <PeopleIcon /> },
+    { text: "Departments", path: "/departments", icon: <BusinessIcon /> },
   ];
 
   return (
@@ -28,14 +32,17 @@ const Sidebar = () => {
         [`& .MuiDrawer-paper`]: {
           width: drawerWidth,
           boxSizing: "border-box",
+          backgroundColor: "#f8fafc",
         },
       }}
     >
-      <Toolbar>
-        <Typography variant="h6" fontWeight={600}>
+      <Toolbar sx={{ px: 3 }}>
+        <Typography variant="h6" fontWeight={700}>
           Admin Panel
         </Typography>
       </Toolbar>
+
+      <Divider />
 
       <Box sx={{ overflow: "auto" }}>
         <List>
@@ -45,13 +52,22 @@ const Sidebar = () => {
               component={NavLink}
               to={item.path}
               sx={{
+                borderRadius: 2,
+                mx: 1,
+                my: 0.5,
                 "&.active": {
-                  backgroundColor: "primary.light",
-                  color: "primary.contrastText",
+                  backgroundColor: "action.selected",
+                  borderLeft: "4px solid",
+                  borderColor: "primary.main",
+                  fontWeight: 600,
+                },
+                "&:hover": {
+                  backgroundColor: "action.hover",
                 },
               }}
             >
-              <ListItemText primary={item.text} />
+              {item.icon}
+              <ListItemText primary={item.text} sx={{ ml: 2 }} />
             </ListItemButton>
           ))}
         </List>

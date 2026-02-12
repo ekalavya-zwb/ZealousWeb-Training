@@ -127,7 +127,7 @@ const EditDepartment = () => {
       <Box
         component="form"
         onSubmit={handleUpdateDepartment}
-        sx={{ maxWidth: 500, mx: "auto", mt: 4 }}
+        sx={{ maxWidth: 500, mx: "auto" }}
       >
         <Typography variant="h4" align="center" gutterBottom>
           Edit Department

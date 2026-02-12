@@ -159,7 +159,7 @@ const EditEmployee = () => {
       <Box
         component="form"
         onSubmit={handleUpdateUser}
-        sx={{ maxWidth: 500, mx: "auto", mt: 4 }}
+        sx={{ maxWidth: 500, mx: "auto" }}
       >
         <Typography variant="h4" align="center" gutterBottom>
           Edit Employee

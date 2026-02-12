@@ -10,6 +10,7 @@ import AddDepartment from "./components/AddDepartment";
 import EditDepartment from "./components/EditDepartment";
 import EmployeeDetail from "./components/EmployeeDetail";
 import Layout from "./components/Layout";
+import AssignProject from "./components/AssignProject";
 
 function App() {
   return (
@@ -18,17 +19,21 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />}></Route>
           <Route path="/employees" element={<EmployeeList />}></Route>
-          <Route
-            path="/employeeDetail/:id"
-            element={<EmployeeDetail />}
-          ></Route>
           <Route path="/departments" element={<DepartmentList />}></Route>
+          <Route
+            path="/employees/assign/:id"
+            element={<AssignProject />}
+          ></Route>
           <Route path="/employees/add" element={<AddEmployee />}></Route>
           <Route path="/departments/add" element={<AddDepartment />}></Route>
           <Route path="/employees/edit/:id" element={<EditEmployee />}></Route>
           <Route
             path="/departments/edit/:dept_id"
             element={<EditDepartment />}
+          ></Route>
+          <Route
+            path="/employees/view/:id"
+            element={<EmployeeDetail />}
           ></Route>
           <Route path="*" element={<PageNotFound />}></Route>
         </Route>

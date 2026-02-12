@@ -16,6 +16,7 @@ import {
   FormControl,
   Select,
   Box,
+  Paper,
 } from "@mui/material";
 
 const EmployeeList = () => {
@@ -49,11 +50,13 @@ const EmployeeList = () => {
         cache: "no-store",
       });
 
+      const result = await res.json();
+
       if (!res.ok) {
-        throw new Error(`Request failed with status ${res.status}`);
+        throw new Error("Failed to load employees.");
       }
 
-      return res.json();
+      return result;
     },
   });
 
@@ -115,7 +118,7 @@ const EmployeeList = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to delete Employee.");
+        throw new Error("Failed to remove employee.");
       }
 
       return data;
@@ -138,7 +141,7 @@ const EmployeeList = () => {
 
   if (isLoading) {
     return (
-      <Typography align="center" mt={3}>
+      <Typography align="center" fontWeight={600}>
         Loading Employees...
         <CircularProgress sx={{ display: "block", mx: "auto", mt: 2 }} />
       </Typography>
@@ -146,23 +149,38 @@ const EmployeeList = () => {
   }
   if (error) {
     return (
-      <Typography color="error" align="center" mt={3}>
-        {error.message}
-      </Typography>
+      <Alert severity="error">
+        <Typography fontWeight={600}>{error.message}</Typography>
+      </Alert>
     );
   }
 
   return (
     <>
-      <Box sx={{ mb: 2 }}>
-        <Stack
-          direction="row"
-          spacing={3}
-          useFlexGap
-          flexWrap="wrap"
-          justifyContent="center"
-          alignItems="center"
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+        }}
+      >
+        <Typography variant="h5" fontWeight={600}>
+          Employees
+        </Typography>
+
+        <Button
+          variant="contained"
+          color="primary"
+          component={NavLink}
+          to="/employees/add"
         >
+          Add Employee
+        </Button>
+      </Box>
+
+      <Box sx={{ mb: 3 }}>
+        <Stack direction="row" spacing={3} useFlexGap flexWrap="wrap">
           <TextField
             size="small"
             label="First Name"
@@ -246,8 +264,9 @@ const EmployeeList = () => {
             </Select>
           </FormControl>
           <Button
-            variant="contained"
-            color="error"
+            color="inherit"
+            variant="outlined"
+            size="medium"
             sx={{ height: 40 }}
             onClick={() => setFilters(emptyFilters)}
           >
@@ -256,81 +275,131 @@ const EmployeeList = () => {
         </Stack>
       </Box>
 
-      {deleteMutation.isError && (
-        <Typography color="error" align="center">
-          {deleteMutation.error.message}
-        </Typography>
-      )}
-
-      {data.length === 0 && (
-        <Typography align="center" color="error">
-          No employees found.
-        </Typography>
-      )}
+      <Box sx={{ mb: 3 }}>
+        {deleteMutation.isError && (
+          <Alert severity="error">
+            <Typography fontWeight={600}>
+              {deleteMutation.error.message}
+            </Typography>
+          </Alert>
+        )}
+      </Box>
 
       {newData.length === 0 && (
-        <Typography align="center" color="error">
-          No employee match your filters.
-        </Typography>
+        <Box
+          sx={{
+            textAlign: "center",
+            mb: 4,
+            color: "text.secondary",
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            No employees found
+          </Typography>
+          <Typography variant="body2">
+            Try adjusting your filters or clear them.
+          </Typography>
+          <Button
+            variant="outlined"
+            sx={{ mt: 2 }}
+            onClick={() => setFilters(emptyFilters)}
+          >
+            Clear Filters
+          </Button>
+        </Box>
       )}
 
-      <Table
-        sx={{
-          "& th, & td": {
-            textAlign: "center",
-            verticalAlign: "middle",
-          },
-        }}
-      >
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>First Name</TableCell>
-            <TableCell>Last Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Salary</TableCell>
-            <TableCell>Hire Date</TableCell>
-            <TableCell>Department ID</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {newData.map((employee) => (
-            <TableRow key={employee.id}>
-              <TableCell>{employee.id}</TableCell>
-              <TableCell>{employee.first_name} </TableCell>
-              <TableCell>{employee.last_name} </TableCell>
-              <TableCell>{employee.email}</TableCell>
-              <TableCell>
-                ${roundSalary(Number(employee.salary)).toLocaleString()}
-              </TableCell>
-              <TableCell>{formatDate(employee.hire_date)}</TableCell>
-              <TableCell>{employee.dept_id}</TableCell>
-              <TableCell>{employee.state}</TableCell>
-              <TableCell>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => deleteEmployee(employee.id)}
-                  disabled={deleteMutation.isLoading}
-                >
-                  {deleteMutation.isLoading ? "Deleting..." : "Delete"}
-                </Button>
-                <Button
-                  component={NavLink}
-                  to={`/employees/edit/${employee.id}`}
-                  variant="contained"
-                  color="warning"
-                  sx={{ ml: 1 }}
-                >
-                  Edit
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Box>
+        <Paper
+          elevation={1}
+          sx={{
+            borderRadius: 2,
+            overflow: "hidden",
+          }}
+        >
+          <Table
+            size="medium"
+            sx={{
+              "& th": {
+                fontWeight: 600,
+                backgroundColor: "#f9fafb",
+              },
+              "& td, & th": {
+                borderBottom: "1px solid #eee",
+                textAlign: "center",
+              },
+              "& tr:last-child td": {
+                borderBottom: "none",
+              },
+              "& tbody tr:hover": {
+                backgroundColor: "#f5f5f5",
+              },
+            }}
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>First Name</TableCell>
+                <TableCell>Last Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Salary</TableCell>
+                <TableCell>Hire Date</TableCell>
+                <TableCell>Department ID</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {newData.map((employee) => (
+                <TableRow key={employee.id}>
+                  <TableCell>{employee.id}</TableCell>
+                  <TableCell>{employee.first_name} </TableCell>
+                  <TableCell>{employee.last_name} </TableCell>
+                  <TableCell>{employee.email}</TableCell>
+                  <TableCell>
+                    ${roundSalary(Number(employee.salary)).toLocaleString()}
+                  </TableCell>
+                  <TableCell>{formatDate(employee.hire_date)}</TableCell>
+                  <TableCell>{employee.dept_id}</TableCell>
+                  <TableCell>{employee.state}</TableCell>
+                  <TableCell>
+                    <Stack
+                      direction="row"
+                      spacing={1.5}
+                      justifyContent="center"
+                    >
+                      <Button
+                        component={NavLink}
+                        to={`/employees/view/${employee.id}`}
+                        variant="outlined"
+                        color="warning"
+                      >
+                        View
+                      </Button>
+                      <Button
+                        component={NavLink}
+                        to={`/employees/edit/${employee.id}`}
+                        variant="outlined"
+                        color="info"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => deleteEmployee(employee.id)}
+                        disabled={deleteMutation.isLoading}
+                      >
+                        {deleteMutation.isLoading ? "Deleting..." : "Delete"}
+                      </Button>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      </Box>
     </>
   );
 };

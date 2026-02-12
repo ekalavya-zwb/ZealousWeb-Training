@@ -13,6 +13,8 @@ import {
   TextField,
   Stack,
   Box,
+  Alert,
+  Paper,
 } from "@mui/material";
 
 const DepartmentList = () => {
@@ -40,11 +42,13 @@ const DepartmentList = () => {
         cache: "no-store",
       });
 
+      const result = await res.json();
+
       if (!res.ok) {
-        throw new Error(`Request failed with status ${res.status}`);
+        throw new Error("Failed to load departments.");
       }
 
-      return res.json();
+      return result;
     },
   });
 
@@ -79,7 +83,7 @@ const DepartmentList = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to delete Department.");
+        throw new Error("Failed to delete department.");
       }
 
       return data;
@@ -99,29 +103,47 @@ const DepartmentList = () => {
 
   if (isLoading) {
     return (
-      <Typography align="center" mt={3}>
+      <Typography align="center" fontWeight={600}>
         Loading Departments...
         <CircularProgress sx={{ display: "block", mx: "auto", mt: 2 }} />
       </Typography>
     );
   }
+
   if (error) {
     return (
-      <Typography color="error" align="center" mt={3}>
-        {error.message}
-      </Typography>
+      <Alert severity="error">
+        <Typography fontWeight={600}>{error.message}</Typography>
+      </Alert>
     );
   }
 
   return (
     <>
-      <Box sx={{ mb: 2 }}>
-        <Stack
-          direction="row"
-          spacing={4}
-          justifyContent="center"
-          alignItems="center"
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+        }}
+      >
+        <Typography variant="h5" fontWeight={600}>
+          Departments
+        </Typography>
+
+        <Button
+          variant="contained"
+          color="primary"
+          component={NavLink}
+          to="/departments/add"
         >
+          Add Department
+        </Button>
+      </Box>
+
+      <Box sx={{ mb: 3 }}>
+        <Stack direction="row" spacing={3} useFlexGap flexWrap="wrap">
           <TextField
             size="small"
             type="number"
@@ -148,8 +170,8 @@ const DepartmentList = () => {
           />
 
           <Button
-            variant="contained"
-            color="warning"
+            color="inherit"
+            variant="outlined"
             size="medium"
             sx={{ height: 40 }}
             onClick={() => setFilters(emptyFilters)}
@@ -159,69 +181,111 @@ const DepartmentList = () => {
         </Stack>
       </Box>
 
-      {deleteMutation.isError && (
-        <Typography color="error" align="center">
-          {deleteMutation.error.message}
-        </Typography>
-      )}
-
-      {data.length === 0 && (
-        <Typography align="center" color="error">
-          Departments does not exist.
-        </Typography>
-      )}
+      <Box sx={{ mb: 3 }}>
+        {deleteMutation.isError && (
+          <Alert severity="error">
+            <Typography fontWeight={600}>
+              {deleteMutation.error.message}
+            </Typography>
+          </Alert>
+        )}
+      </Box>
 
       {newData.length === 0 && (
-        <Typography align="center" color="error">
-          No department match your filters.
-        </Typography>
+        <Box
+          sx={{
+            textAlign: "center",
+            mb: 4,
+            color: "text.secondary",
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            No departments found
+          </Typography>
+          <Typography variant="body2">
+            Try adjusting your filters or clear them.
+          </Typography>
+          <Button
+            variant="outlined"
+            sx={{ mt: 2 }}
+            onClick={() => setFilters(emptyFilters)}
+          >
+            Clear Filters
+          </Button>
+        </Box>
       )}
 
-      <Table
-        sx={{
-          "& th, & td": {
-            textAlign: "center",
-            verticalAlign: "middle",
-          },
-        }}
-      >
-        <TableHead>
-          <TableRow>
-            <TableCell>Department ID</TableCell>
-            <TableCell>Department</TableCell>
-            <TableCell>Location</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {newData.map((department) => (
-            <TableRow key={department.dept_id}>
-              <TableCell>{department.dept_id}</TableCell>
-              <TableCell>{department.dept_name} </TableCell>
-              <TableCell>{department.location} </TableCell>
-              <TableCell>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => deleteDepartment(department.dept_id)}
-                  disabled={deleteMutation.isLoading}
-                >
-                  {deleteMutation.isLoading ? "Deleting..." : "Delete"}
-                </Button>
-                <Button
-                  component={NavLink}
-                  to={`/departments/edit/${department.dept_id}`}
-                  variant="contained"
-                  color="warning"
-                  sx={{ ml: 1 }}
-                >
-                  Edit
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Box sx={{ maxWidth: 1000 }}>
+        <Paper
+          elevation={1}
+          sx={{
+            borderRadius: 2,
+            overflow: "hidden",
+          }}
+        >
+          <Table
+            size="medium"
+            sx={{
+              "& th": {
+                fontWeight: 600,
+                backgroundColor: "#f9fafb",
+              },
+              "& td, & th": {
+                borderBottom: "1px solid #eee",
+                textAlign: "center",
+              },
+              "& tr:last-child td": {
+                borderBottom: "none",
+              },
+              "& tbody tr:hover": {
+                backgroundColor: "#f5f5f5",
+              },
+            }}
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell>Department ID</TableCell>
+                <TableCell>Department</TableCell>
+                <TableCell>Location</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {newData.map((department) => (
+                <TableRow key={department.dept_id}>
+                  <TableCell>{department.dept_id}</TableCell>
+                  <TableCell>{department.dept_name} </TableCell>
+                  <TableCell>{department.location} </TableCell>
+                  <TableCell>
+                    <Stack
+                      direction="row"
+                      spacing={1.5}
+                      justifyContent="center"
+                    >
+                      <Button
+                        component={NavLink}
+                        to={`/departments/edit/${department.dept_id}`}
+                        variant="outlined"
+                        color="warning"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => deleteDepartment(department.dept_id)}
+                        disabled={deleteMutation.isLoading}
+                      >
+                        {deleteMutation.isLoading ? "Deleting..." : "Delete"}
+                      </Button>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      </Box>
     </>
   );
 };

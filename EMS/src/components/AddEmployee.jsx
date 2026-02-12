@@ -150,7 +150,7 @@ const AddEmployee = () => {
       <Box
         component="form"
         onSubmit={handleCreateUser}
-        sx={{ maxWidth: 500, mx: "auto", mt: 4 }}
+        sx={{ maxWidth: 500, mx: "auto" }}
       >
         {step === 1 && (
           <>
