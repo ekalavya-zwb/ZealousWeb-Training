@@ -50,13 +50,11 @@ const EmployeeList = () => {
         cache: "no-store",
       });
 
-      const result = await res.json();
-
       if (!res.ok) {
-        throw new Error("Failed to load employees.");
+        throw new Error("Failed to retrieve employees.");
       }
 
-      return result;
+      return res.json();
     },
   });
 
@@ -80,29 +78,23 @@ const EmployeeList = () => {
         .includes(first_name.toLowerCase().trim())
     )
       return false;
-
     if (
       last_name &&
       !employee.last_name.toLowerCase().includes(last_name.toLowerCase().trim())
     )
       return false;
-
     if (
       email &&
       !employee.email.toLowerCase().includes(email.toLowerCase().trim())
     )
       return false;
-
     if (salaryMin && Number(employee.salary) < Number(salaryMin)) return false;
     if (salaryMax && Number(employee.salary) > Number(salaryMax)) return false;
-
     if (hireDateFrom && new Date(employee.hire_date) < new Date(hireDateFrom))
       return false;
     if (hireDateTo && new Date(employee.hire_date) > new Date(hireDateTo))
       return false;
-
     if (dept_id && Number(employee.dept_id) !== Number(dept_id)) return false;
-
     if (state && employee.state.toLowerCase() !== state.toLowerCase())
       return false;
 
@@ -115,13 +107,11 @@ const EmployeeList = () => {
         method: "DELETE",
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
         throw new Error("Failed to remove employee.");
       }
 
-      return data;
+      return res.json();
     },
 
     onSuccess: (deletedEmployee) => {
@@ -165,7 +155,7 @@ const EmployeeList = () => {
           mb: 3,
         }}
       >
-        <Typography variant="h5" fontWeight={600}>
+        <Typography variant="h4" fontWeight={600}>
           Employees
         </Typography>
 
@@ -204,6 +194,7 @@ const EmployeeList = () => {
             value={filters.email}
             onChange={(e) => updateFilters("email", e.target.value)}
           />
+
           <Stack direction="row" spacing={1}>
             <TextField
               size="small"
@@ -222,6 +213,7 @@ const EmployeeList = () => {
               onChange={(e) => updateFilters("salaryMax", e.target.value)}
             />
           </Stack>
+
           <Stack direction="row" spacing={1}>
             <TextField
               size="small"
@@ -242,6 +234,7 @@ const EmployeeList = () => {
               onChange={(e) => updateFilters("hireDateTo", e.target.value)}
             />
           </Stack>
+
           <TextField
             size="small"
             type="number"
@@ -250,6 +243,7 @@ const EmployeeList = () => {
             value={filters.dept_id}
             onChange={(e) => updateFilters("dept_id", e.target.value)}
           />
+
           <FormControl size="small" sx={{ width: 160 }}>
             <Select
               displayEmpty
@@ -263,6 +257,7 @@ const EmployeeList = () => {
               <MenuItem value="Terminated">Terminated</MenuItem>
             </Select>
           </FormControl>
+
           <Button
             color="inherit"
             variant="outlined"
@@ -349,6 +344,7 @@ const EmployeeList = () => {
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
+
             <TableBody>
               {newData.map((employee) => (
                 <TableRow key={employee.id}>

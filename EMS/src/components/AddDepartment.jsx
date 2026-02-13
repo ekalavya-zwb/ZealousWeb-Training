@@ -26,7 +26,7 @@ const AddDepartment = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to create Department.");
+        throw new Error("Failed to create department.");
       }
 
       return res.json();
@@ -42,7 +42,12 @@ const AddDepartment = () => {
 
   const handleInputs = (event) => {
     const { name, value } = event.target;
+
     setInputs((prev) => ({ ...prev, [name]: value }));
+
+    if (error[name]) {
+      setError((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const handleCreateDept = async (event) => {
@@ -61,15 +66,16 @@ const AddDepartment = () => {
       return;
     }
 
+    setError({});
     addMutation.mutate(inputs);
   };
 
   return (
     <>
       {addMutation.isError && (
-        <Typography color="error" mt={2} align="center">
-          {addMutation.error.message}
-        </Typography>
+        <Alert severity="error" sx={{ mb: 2 }}>
+          <Typography fontWeight={600}>{addMutation.error.message}</Typography>
+        </Alert>
       )}
 
       <Box
@@ -80,6 +86,7 @@ const AddDepartment = () => {
         <Typography variant="h4" gutterBottom align="center">
           Create Department
         </Typography>
+
         <TextField
           label="Department"
           name="dept_name"
@@ -93,6 +100,7 @@ const AddDepartment = () => {
             {error.dept_name}
           </Alert>
         )}
+
         <TextField
           label="Location"
           name="location"
@@ -106,6 +114,7 @@ const AddDepartment = () => {
             {error.location}
           </Alert>
         )}
+
         <Button
           type="submit"
           variant="contained"

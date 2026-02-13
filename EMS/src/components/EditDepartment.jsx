@@ -31,15 +31,11 @@ const EditDepartment = () => {
         cache: "no-store",
       });
 
-      const result = await res.json();
-
       if (!res.ok) {
-        throw new Error(
-          result.error || `Request failed with status ${res.status}`,
-        );
+        throw new Error("Failed to load department.");
       }
 
-      return result;
+      return res.json();
     },
   });
 
@@ -59,13 +55,11 @@ const EditDepartment = () => {
         body: JSON.stringify(newDepartment),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || "Failed to update Department.");
+        throw new Error("Failed to update department.");
       }
 
-      return data;
+      return res.json();
     },
     onSuccess: (updatedDepartmentMsg) => {
       queryClient.invalidateQueries(["departments"]);
@@ -77,7 +71,12 @@ const EditDepartment = () => {
 
   const handleInputs = (event) => {
     const { name, value } = event.target;
+
     setInputs((prev) => ({ ...prev, [name]: value }));
+
+    if (formError[name]) {
+      setFormError((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const handleUpdateDepartment = (event) => {
@@ -96,13 +95,13 @@ const EditDepartment = () => {
       return;
     }
 
-    setFormError(emptyForm);
+    setFormError({});
     editMutation.mutate(inputs);
   };
 
   if (isLoading) {
     return (
-      <Typography align="center" mt={3}>
+      <Typography align="center" fontWeight={600}>
         Loading Department...
         <CircularProgress sx={{ display: "block", mx: "auto", mt: 2 }} />
       </Typography>
@@ -110,18 +109,18 @@ const EditDepartment = () => {
   }
   if (error) {
     return (
-      <Typography color="error" align="center" mt={3}>
-        {error.message}
-      </Typography>
+      <Alert severity="error">
+        <Typography fontWeight={600}>{error.message}</Typography>
+      </Alert>
     );
   }
 
   return (
     <>
       {editMutation.isError && (
-        <Typography color="error" align="center" mt={2}>
-          {editMutation.error.message}
-        </Typography>
+        <Alert severity="error" sx={{ mb: 2 }}>
+          <Typography fontWeight={600}>{editMutation.error.message}</Typography>
+        </Alert>
       )}
 
       <Box
@@ -132,6 +131,7 @@ const EditDepartment = () => {
         <Typography variant="h4" align="center" gutterBottom>
           Edit Department
         </Typography>
+
         <TextField
           label="Department"
           name="dept_name"
@@ -145,6 +145,7 @@ const EditDepartment = () => {
             {formError.dept_name}
           </Alert>
         )}
+
         <TextField
           label="Location"
           name="location"
@@ -158,6 +159,7 @@ const EditDepartment = () => {
             {formError.location}
           </Alert>
         )}
+
         <Button
           type="submit"
           variant="contained"

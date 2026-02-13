@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   Typography,
   Button,
   TextField,
   Box,
+  CircularProgress,
   Alert,
   MenuItem,
-  FormControl,
-  Select,
-  CircularProgress,
 } from "@mui/material";
 
 const AssignProject = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const emptyForm = {
     project_id: "",
@@ -30,19 +29,17 @@ const AssignProject = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["employees"],
+    queryKey: ["projects"],
     queryFn: async () => {
       const res = await fetch("/api/projects", {
         cache: "no-store",
       });
 
-      const result = await res.json();
-
       if (!res.ok) {
-        throw new Error("Failed to load employees.");
+        throw new Error("Failed to load projects.");
       }
 
-      return result;
+      return res.json();
     },
   });
 
@@ -66,12 +63,18 @@ const AssignProject = () => {
     onSuccess: (assignedEmployeeMsg) => {
       setInputs(emptyForm);
       console.log(assignedEmployeeMsg);
+      navigate(`/employees/view/${id}`);
     },
   });
 
   const handleInputs = (event) => {
     const { name, value } = event.target;
+
     setInputs((prev) => ({ ...prev, [name]: value }));
+
+    if (formError[name]) {
+      setFormError((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const handleAssignUser = (event) => {
@@ -80,9 +83,7 @@ const AssignProject = () => {
     const newErrors = {};
 
     if (!inputs.project_id) {
-      newErrors.project_id = "Project ID is required";
-    } else if (Number(inputs.project_id) <= 0) {
-      newErrors.project_id = "Invalid project ID";
+      newErrors.project_id = "Project name cannot remain empty";
     }
     if (!inputs.hours_worked) {
       newErrors.hours_worked = "Work hours is required";
@@ -97,14 +98,14 @@ const AssignProject = () => {
       return;
     }
 
-    setFormError(emptyForm);
+    setFormError({});
     addMutation.mutate(inputs);
   };
 
   if (isLoading) {
     return (
       <Typography align="center" fontWeight={600}>
-        Loading Employees...
+        Loading Projects...
         <CircularProgress sx={{ display: "block", mx: "auto", mt: 2 }} />
       </Typography>
     );
@@ -119,6 +120,12 @@ const AssignProject = () => {
 
   return (
     <>
+      {addMutation.isError && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          <Typography fontWeight={600}>{addMutation.error.message}</Typography>
+        </Alert>
+      )}
+
       <Box
         component="form"
         onSubmit={handleAssignUser}
@@ -127,6 +134,7 @@ const AssignProject = () => {
         <Typography variant="h4" gutterBottom align="center">
           Assign Employee
         </Typography>
+
         <TextField
           select
           label="Project"
@@ -143,12 +151,12 @@ const AssignProject = () => {
             </MenuItem>
           ))}
         </TextField>
-
         {formError.project_id && (
           <Alert severity="error" variant="standard">
             {formError.project_id}
           </Alert>
         )}
+
         <TextField
           label="Work Hours"
           type="number"
@@ -163,6 +171,7 @@ const AssignProject = () => {
             {formError.hours_worked}
           </Alert>
         )}
+
         <TextField
           label="Role"
           name="role"
@@ -176,8 +185,15 @@ const AssignProject = () => {
             {formError.role}
           </Alert>
         )}
-        <Button type="submit" variant="contained" sx={{ mt: 2 }} fullWidth>
-          Assign
+
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ mt: 2 }}
+          fullWidth
+          disabled={addMutation.isLoading}
+        >
+          {addMutation.isLoading ? "Assigning..." : "Assign"}
         </Button>
       </Box>
     </>

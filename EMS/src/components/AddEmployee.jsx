@@ -54,7 +54,7 @@ const AddEmployee = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to create Employee.");
+        throw new Error("Failed to create employee.");
       }
 
       return res.json();
@@ -70,7 +70,12 @@ const AddEmployee = () => {
 
   const handleInputs = (event) => {
     const { name, value } = event.target;
+
     setInputs((prev) => ({ ...prev, [name]: value }));
+
+    if (error[name]) {
+      setError((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const handleCreateUser = async (event) => {
@@ -101,19 +106,16 @@ const AddEmployee = () => {
       } else if (Number(inputs.dept_id) <= 0) {
         newErrors.dept_id = "Invalid department";
       }
-
       if (!inputs.salary) {
         newErrors.salary = "Salary cannot remain empty";
       } else if (Number(inputs.salary) <= 0) {
         newErrors.salary = "Salary must be greater than 0";
       }
-
       if (!inputs.hire_date) {
         newErrors.hire_date = "Hire date cannot remain empty";
       } else if (inputDate > today) {
         newErrors.hire_date = "Hire date cannot be in the future";
       }
-
       if (inputs.state.trim() === "") {
         newErrors.state = "Status cannot remain empty";
       }
@@ -142,9 +144,9 @@ const AddEmployee = () => {
   return (
     <>
       {addMutation.isError && (
-        <Typography color="error" mt={2} align="center">
-          {addMutation.error.message}
-        </Typography>
+        <Alert severity="error" sx={{ mb: 2 }}>
+          <Typography fontWeight={600}>{addMutation.error.message}</Typography>
+        </Alert>
       )}
 
       <Box
@@ -157,6 +159,7 @@ const AddEmployee = () => {
             <Typography variant="h4" gutterBottom align="center">
               Step 1: Personal Info
             </Typography>
+
             <TextField
               label="First Name"
               name="first_name"
@@ -170,6 +173,7 @@ const AddEmployee = () => {
                 {error.first_name}
               </Alert>
             )}
+
             <TextField
               label="Last Name"
               name="last_name"
@@ -183,6 +187,7 @@ const AddEmployee = () => {
                 {error.last_name}
               </Alert>
             )}
+
             <TextField
               label="Email"
               type="email"
@@ -197,6 +202,7 @@ const AddEmployee = () => {
                 {error.email}
               </Alert>
             )}
+
             <Box
               sx={{
                 display: "flex",
@@ -224,6 +230,7 @@ const AddEmployee = () => {
             <Typography variant="h4" gutterBottom align="center">
               Step 2: Employment Info
             </Typography>
+
             <TextField
               label="Hire Date"
               type="date"
@@ -239,6 +246,7 @@ const AddEmployee = () => {
                 {error.hire_date}
               </Alert>
             )}
+
             <TextField
               label="Salary"
               type="number"
@@ -253,6 +261,7 @@ const AddEmployee = () => {
                 {error.salary}
               </Alert>
             )}
+
             <TextField
               label="Department ID"
               type="number"
@@ -267,6 +276,7 @@ const AddEmployee = () => {
                 {error.dept_id}
               </Alert>
             )}
+
             <TextField
               label="Status"
               name="state"
@@ -280,6 +290,7 @@ const AddEmployee = () => {
                 {error.state}
               </Alert>
             )}
+
             <Box
               sx={{
                 display: "flex",
@@ -326,6 +337,7 @@ const AddEmployee = () => {
                 <Row label="Status" value={inputs.state} />
               </Stack>
             </Card>
+
             <Box
               sx={{
                 display: "flex",
@@ -347,6 +359,7 @@ const AddEmployee = () => {
             </Box>
           </>
         )}
+
         <Typography color="textPrimary" align="center" mt={2}>
           Step {step} of 3
         </Typography>

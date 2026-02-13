@@ -13,7 +13,6 @@ import {
 const EditEmployee = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
-  const formatDate = (isoStr) => isoStr.split("T")[0];
   const navigate = useNavigate();
 
   const emptyForm = {
@@ -37,21 +36,20 @@ const EditEmployee = () => {
         cache: "no-store",
       });
 
-      const result = await res.json();
-
       if (!res.ok) {
-        throw new Error(
-          result.error || `Request failed with status ${res.status}`,
-        );
+        throw new Error("Failed to retrieve employee.");
       }
 
-      return result;
+      return res.json();
     },
   });
 
   useEffect(() => {
     if (data) {
-      setInputs(data);
+      setInputs({
+        ...data,
+        hire_date: data.hire_date?.split("T")[0] || "",
+      });
     }
   }, [data]);
 
@@ -65,13 +63,11 @@ const EditEmployee = () => {
         body: JSON.stringify(updatedEmployee),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || "Failed to update Employee.");
+        throw new Error("Failed to update employee.");
       }
 
-      return data;
+      return res.json();
     },
     onSuccess: (updatedEmployee) => {
       queryClient.invalidateQueries(["employees"]);
@@ -83,7 +79,12 @@ const EditEmployee = () => {
 
   const handleInputs = (event) => {
     const { name, value } = event.target;
+
     setInputs((prev) => ({ ...prev, [name]: value }));
+
+    if (formError[name]) {
+      setFormError((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const today = new Date();
@@ -128,13 +129,13 @@ const EditEmployee = () => {
       return;
     }
 
-    setFormError(emptyForm);
+    setFormError({});
     editMutation.mutate(inputs);
   };
 
   if (isLoading) {
     return (
-      <Typography align="center" mt={3}>
+      <Typography align="center" fontWeight={600}>
         Loading Employee...
         <CircularProgress sx={{ display: "block", mx: "auto", mt: 2 }} />
       </Typography>
@@ -142,18 +143,18 @@ const EditEmployee = () => {
   }
   if (error) {
     return (
-      <Typography color="error" align="center" mt={3}>
-        {error.message}
-      </Typography>
+      <Alert severity="error">
+        <Typography fontWeight={600}>{error.message}</Typography>
+      </Alert>
     );
   }
 
   return (
     <>
       {editMutation.isError && (
-        <Typography color="error" align="center" mt={2}>
-          {editMutation.error.message}
-        </Typography>
+        <Alert severity="error" sx={{ mb: 2 }}>
+          <Typography fontWeight={600}>{editMutation.error.message}</Typography>
+        </Alert>
       )}
 
       <Box
@@ -164,6 +165,7 @@ const EditEmployee = () => {
         <Typography variant="h4" align="center" gutterBottom>
           Edit Employee
         </Typography>
+
         <TextField
           label="First Name"
           name="first_name"
@@ -177,6 +179,7 @@ const EditEmployee = () => {
             {formError.first_name}
           </Alert>
         )}
+
         <TextField
           label="Last Name"
           name="last_name"
@@ -190,6 +193,7 @@ const EditEmployee = () => {
             {formError.last_name}
           </Alert>
         )}
+
         <TextField
           label="Email"
           type="email"
@@ -204,11 +208,12 @@ const EditEmployee = () => {
             {formError.email}
           </Alert>
         )}
+
         <TextField
           label="Hire Date"
           type="date"
           name="hire_date"
-          value={formatDate(inputs.hire_date)}
+          value={inputs.hire_date}
           onChange={handleInputs}
           fullWidth
           margin="normal"
@@ -219,6 +224,7 @@ const EditEmployee = () => {
             {formError.hire_date}
           </Alert>
         )}
+
         <TextField
           label="Salary"
           type="number"
@@ -233,6 +239,7 @@ const EditEmployee = () => {
             {formError.salary}
           </Alert>
         )}
+
         <TextField
           label="Department ID"
           type="number"
@@ -247,6 +254,7 @@ const EditEmployee = () => {
             {formError.dept_id}
           </Alert>
         )}
+
         <TextField
           label="Status"
           name="state"
@@ -260,6 +268,7 @@ const EditEmployee = () => {
             {formError.state}
           </Alert>
         )}
+
         <Button
           type="submit"
           variant="contained"

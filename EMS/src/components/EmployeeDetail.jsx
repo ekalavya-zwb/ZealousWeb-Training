@@ -40,7 +40,7 @@ const EmployeeDetail = () => {
       const result = await res.json();
 
       if (!res.ok) {
-        throw new Error("Failed to load employee.");
+        throw new Error("Failed to retrieve employee.");
       }
 
       return result;
@@ -72,7 +72,9 @@ const EmployeeDetail = () => {
         <Typography variant="h4" gutterBottom align="center">
           Employee Details
         </Typography>
+
         <Divider sx={{ my: 2 }} />
+
         <Stack spacing={1.5}>
           <Row
             label="Full Name"
@@ -87,16 +89,26 @@ const EmployeeDetail = () => {
           <Row label="Department" value={data.dept_name} />
           <Row label="Status" value={data.state} />
         </Stack>
+
         <Button
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mt: 2 }}
           component={NavLink}
           to={`/employees/assign/${data.id}`}
           disabled={data.state !== "ACTIVE"}
+          sx={{
+            mt: 2,
+            "&.Mui-disabled": {
+              backgroundColor: "#90caf9",
+              color: "#fff",
+              opacity: 1,
+            },
+          }}
         >
-          Assign Employee
+          {data.state !== "ACTIVE"
+            ? `Employee is ${data.state}`
+            : "Assign Employee"}
         </Button>
       </Card>
     </>

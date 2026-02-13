@@ -20,12 +20,15 @@ const PageNotFound = () => {
           <Typography variant="h1" fontWeight={700}>
             404
           </Typography>
+
           <Typography variant="h5" color="text.secondary">
             Page Not Found
           </Typography>
+
           <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
             The page you are looking for doesn’t exist or has been moved.
           </Typography>
+
           <Button
             variant="contained"
             size="large"

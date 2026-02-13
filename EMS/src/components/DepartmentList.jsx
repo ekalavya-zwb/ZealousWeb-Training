@@ -42,13 +42,11 @@ const DepartmentList = () => {
         cache: "no-store",
       });
 
-      const result = await res.json();
-
       if (!res.ok) {
         throw new Error("Failed to load departments.");
       }
 
-      return result;
+      return res.json();
     },
   });
 
@@ -62,13 +60,11 @@ const DepartmentList = () => {
         .includes(dept_name.toLowerCase().trim())
     )
       return false;
-
     if (
       location &&
       !department.location.toLowerCase().includes(location.toLowerCase().trim())
     )
       return false;
-
     if (dept_id && Number(department.dept_id) !== Number(dept_id)) return false;
 
     return true;
@@ -80,13 +76,11 @@ const DepartmentList = () => {
         method: "DELETE",
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
         throw new Error("Failed to delete department.");
       }
 
-      return data;
+      return res.json();
     },
 
     onSuccess: (deletedDepartment) => {
@@ -109,7 +103,6 @@ const DepartmentList = () => {
       </Typography>
     );
   }
-
   if (error) {
     return (
       <Alert severity="error">
@@ -128,7 +121,7 @@ const DepartmentList = () => {
           mb: 3,
         }}
       >
-        <Typography variant="h5" fontWeight={600}>
+        <Typography variant="h4" fontWeight={600}>
           Departments
         </Typography>
 
@@ -250,6 +243,7 @@ const DepartmentList = () => {
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
+
             <TableBody>
               {newData.map((department) => (
                 <TableRow key={department.dept_id}>

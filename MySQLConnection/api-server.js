@@ -1,12 +1,15 @@
 const express = require("express");
 const cors = require("cors");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 const con = require("./db");
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173" }));
 app.set("json spaces", 2);
+dotenv.config();
 
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -27,12 +30,13 @@ app.get("/api/employees", async (req, res) => {
 });
 
 app.get("/api/employees/:id", async (req, res) => {
-  try {
-    const empId = Number(req.params.id);
-    if (Number.isNaN(empId)) {
-      return res.status(400).json({ message: "Invalid employee ID" });
-    }
+  const empId = Number(req.params.id);
 
+  if (Number.isNaN(empId)) {
+    return res.status(400).json({ message: "Invalid employee ID" });
+  }
+
+  try {
     const [rows] = await con.query("SELECT * FROM employees WHERE id = ?", [
       empId,
     ]);
@@ -49,12 +53,13 @@ app.get("/api/employees/:id", async (req, res) => {
 });
 
 app.get("/api/employees/view/:id", async (req, res) => {
-  try {
-    const empId = Number(req.params.id);
-    if (Number.isNaN(empId)) {
-      return res.status(400).json({ message: "Invalid employee ID" });
-    }
+  const empId = Number(req.params.id);
 
+  if (Number.isNaN(empId)) {
+    return res.status(400).json({ message: "Invalid employee ID" });
+  }
+
+  try {
     const [rows] = await con.query(
       `SELECT e.id, e.first_name, e.last_name, e.email, e.hire_date, e.salary, d.dept_name, e.state
       FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE id = ?`,
@@ -75,10 +80,10 @@ app.get("/api/employees/view/:id", async (req, res) => {
 });
 
 app.post("/api/employees", async (req, res) => {
-  try {
-    const { first_name, last_name, email, hire_date, salary, dept_id, state } =
-      req.body;
+  const { first_name, last_name, email, hire_date, salary, dept_id, state } =
+    req.body;
 
+  try {
     const [result] = await con.query(
       "INSERT INTO employees (first_name, last_name, email, hire_date, salary, dept_id, state) VALUES (?, ?, ?, ?, ?, ?, ?)",
       [first_name, last_name, email, hire_date, salary, dept_id, state],
@@ -95,15 +100,16 @@ app.post("/api/employees", async (req, res) => {
 });
 
 app.put("/api/employees/:id", async (req, res) => {
+  const empId = Number(req.params.id);
+
+  if (Number.isNaN(empId)) {
+    return res.status(400).json({ message: "Invalid employee ID" });
+  }
+
+  const { first_name, last_name, email, hire_date, salary, dept_id, state } =
+    req.body;
+
   try {
-    const empId = Number(req.params.id);
-    if (Number.isNaN(empId)) {
-      return res.status(400).json({ message: "Invalid employee ID" });
-    }
-
-    const { first_name, last_name, email, hire_date, salary, dept_id, state } =
-      req.body;
-
     const [result] = await con.query(
       "UPDATE employees SET first_name=?, last_name=?, email=?, hire_date=?, salary=?, dept_id=?, state=? WHERE id=?",
       [first_name, last_name, email, hire_date, salary, dept_id, state, empId],
@@ -121,12 +127,13 @@ app.put("/api/employees/:id", async (req, res) => {
 });
 
 app.delete("/api/employees/:id", async (req, res) => {
-  try {
-    const empId = Number(req.params.id);
-    if (Number.isNaN(empId)) {
-      return res.status(400).json({ message: "Invalid employee ID" });
-    }
+  const empId = Number(req.params.id);
 
+  if (Number.isNaN(empId)) {
+    return res.status(400).json({ message: "Invalid employee ID" });
+  }
+
+  try {
     const [result] = await con.query("DELETE FROM employees WHERE id = ?", [
       empId,
     ]);
@@ -153,12 +160,13 @@ app.get("/api/departments", async (req, res) => {
 });
 
 app.get("/api/departments/:id", async (req, res) => {
-  try {
-    const deptId = Number(req.params.id);
-    if (Number.isNaN(deptId)) {
-      return res.status(400).json({ message: "Invalid department ID" });
-    }
+  const deptId = Number(req.params.id);
 
+  if (Number.isNaN(deptId)) {
+    return res.status(400).json({ message: "Invalid department ID" });
+  }
+
+  try {
     const [rows] = await con.query(
       "SELECT * FROM departments WHERE dept_id = ?",
       [deptId],
@@ -176,9 +184,9 @@ app.get("/api/departments/:id", async (req, res) => {
 });
 
 app.post("/api/departments", async (req, res) => {
-  try {
-    const { dept_name, location } = req.body;
+  const { dept_name, location } = req.body;
 
+  try {
     const [result] = await con.query(
       "INSERT INTO departments (dept_name, location) VALUES (?, ?)",
       [dept_name, location],
@@ -195,14 +203,15 @@ app.post("/api/departments", async (req, res) => {
 });
 
 app.put("/api/departments/:id", async (req, res) => {
+  const deptId = Number(req.params.id);
+
+  if (Number.isNaN(deptId)) {
+    return res.status(400).json({ message: "Invalid department ID" });
+  }
+
+  const { dept_name, location } = req.body;
+
   try {
-    const deptId = Number(req.params.id);
-    if (Number.isNaN(deptId)) {
-      return res.status(400).json({ message: "Invalid department ID" });
-    }
-
-    const { dept_name, location } = req.body;
-
     const [result] = await con.query(
       "UPDATE departments SET dept_name=?, location=? WHERE dept_id=?",
       [dept_name, location, deptId],
@@ -220,12 +229,13 @@ app.put("/api/departments/:id", async (req, res) => {
 });
 
 app.delete("/api/departments/:id", async (req, res) => {
-  try {
-    const deptId = Number(req.params.id);
-    if (Number.isNaN(deptId)) {
-      return res.status(400).json({ message: "Invalid department ID" });
-    }
+  const deptId = Number(req.params.id);
 
+  if (Number.isNaN(deptId)) {
+    return res.status(400).json({ message: "Invalid department ID" });
+  }
+
+  try {
     const [result] = await con.query(
       "DELETE FROM departments WHERE dept_id = ?",
       [deptId],
@@ -243,25 +253,59 @@ app.delete("/api/departments/:id", async (req, res) => {
 });
 
 app.post("/api/employees/assign/:id", async (req, res) => {
+  const empId = Number(req.params.id);
+
+  if (Number.isNaN(empId)) {
+    return res.status(400).json({ message: "Invalid employee ID" });
+  }
+
+  const { project_id, hours_worked, role } = req.body;
+
+  let connection;
+
   try {
-    const empId = Number(req.params.id);
-    if (Number.isNaN(empId)) {
-      return res.status(400).json({ message: "Invalid employee ID" });
+    connection = await con.getConnection();
+    await connection.beginTransaction();
+
+    const [existing] = await connection.query(
+      "SELECT 1 FROM employee_projects WHERE emp_id = ? AND project_id = ?",
+      [empId, project_id],
+    );
+
+    if (existing.length > 0) {
+      await connection.rollback();
+      return res.status(400).json({
+        message: "Employee is already assigned to this project",
+      });
     }
 
-    const { project_id, hours_worked, role } = req.body;
-
-    const [result] = await con.query(
+    await connection.query(
       "INSERT INTO employee_projects (emp_id, project_id, hours_worked, role) VALUES (?, ?, ?, ?)",
       [empId, project_id, hours_worked, role],
     );
 
+    const [updateResult] = await connection.query(
+      "UPDATE employees SET state = 'ONPROJECT' WHERE id = ?",
+      [empId],
+    );
+
+    if (updateResult.affectedRows === 0) {
+      await connection.rollback();
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    await connection.commit();
+
     res.status(201).json({
-      message: "Employee assigned successfully",
+      message: "Employee assigned and state updated successfully",
     });
   } catch (error) {
-    console.error(`POST /api/employees/assign/${empId} error:`, error);
-    res.status(500).json({ message: "Failed to assign employee" });
+    if (connection) await connection.rollback();
+
+    console.error(`/api/employees/assign/${empId} error:`, error);
+    res.status(500).json({ message: error.message });
+  } finally {
+    if (connection) connection.release();
   }
 });
 
@@ -272,6 +316,44 @@ app.get("/api/projects", async (req, res) => {
   } catch (error) {
     console.error(`GET /api/projects error:`, error);
     res.status(500).json({ message: "Failed to retrieve projects" });
+  }
+});
+
+app.post("/api/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const [rows] = await con.query(
+      "SELECT * FROM employees_auth WHERE email = ?",
+      [email],
+    );
+
+    if (rows.length === 0) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    const user = rows[0];
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    const token = jwt.sign({ empId: user.emp_id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    res.status(201).json({
+      employee: {
+        empId: user.emp_id,
+        email: user.email,
+      },
+      token,
+    });
+  } catch (error) {
+    console.error(`POST /api/login error:`, error);
+    res.status(500).json({ error: error.message });
   }
 });
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import StatsSection from "./StatsSection";
+import AuthContext from "../context/AuthContext";
 import {
   Container,
   Typography,
@@ -18,7 +19,7 @@ const Dashboard = () => {
       });
 
       if (!res.ok) {
-        throw new Error(`Request failed with status ${res.status}`);
+        throw new Error("Failed to load metrics.");
       }
 
       return res.json();
@@ -27,18 +28,17 @@ const Dashboard = () => {
 
   if (isLoading) {
     return (
-      <Typography align="center" mt={3}>
+      <Typography align="center" fontWeight={600}>
         Loading Dashboard...
         <CircularProgress sx={{ display: "block", mx: "auto", mt: 2 }} />
       </Typography>
     );
   }
-
   if (error) {
     return (
-      <Typography color="error" align="center" mt={3}>
-        {error.message}
-      </Typography>
+      <Alert severity="error">
+        <Typography fontWeight={600}>{error.message}</Typography>
+      </Alert>
     );
   }
 
@@ -50,7 +50,6 @@ const Dashboard = () => {
       value: `$${Number(data.avgSalary).toLocaleString()}`,
     },
   ];
-
   const employeeStats = [
     { label: "Total Employees", value: data.totalEmployees },
     { label: "Active", value: data.active },
@@ -58,7 +57,6 @@ const Dashboard = () => {
     { label: "Terminated", value: data.terminated },
     { label: "On Boarded", value: data.onBoarded },
   ];
-
   const departmentStats = [
     { label: "Total Departments", value: data.totalDepartments },
     { label: "Engineers", value: data.totalEng },
@@ -66,7 +64,6 @@ const Dashboard = () => {
     { label: "Salesperson", value: data.totalSale },
     { label: "HR Manager", value: data.totalHR },
   ];
-
   const salaryStats = [
     {
       label: "Average Salary (Overall)",
@@ -92,7 +89,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Container maxWidth="xl" sx={{ py: 4 }}>
+      <Container maxWidth="xl">
         <Typography variant="h4" fontWeight={700} mb={4}>
           Dashboard
         </Typography>
