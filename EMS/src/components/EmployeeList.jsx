@@ -115,7 +115,7 @@ const EmployeeList = () => {
     },
 
     onSuccess: (deletedEmployee) => {
-      queryClient.invalidateQueries(["employees"]);
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
       console.log(deletedEmployee);
     },
   });

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -10,6 +10,8 @@ import {
   Stack,
   Divider,
   Alert,
+  CircularProgress,
+  MenuItem,
 } from "@mui/material";
 
 const Row = ({ label, value }) => (
@@ -41,7 +43,26 @@ const AddEmployee = () => {
 
   const [inputs, setInputs] = useState(emptyForm);
   const [step, setStep] = useState(1);
-  const [error, setError] = useState({});
+  const [formError, setFormError] = useState({});
+
+  const {
+    data = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["departments"],
+    queryFn: async () => {
+      const res = await fetch("/api/departments", {
+        cache: "no-store",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to load departments.");
+      }
+
+      return res.json();
+    },
+  });
 
   const addMutation = useMutation({
     mutationFn: async (newEmployee) => {
@@ -61,7 +82,7 @@ const AddEmployee = () => {
     },
 
     onSuccess: (createdEmployeeMsg) => {
-      queryClient.invalidateQueries(["employees"]);
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
       setInputs(emptyForm);
       console.log(createdEmployeeMsg);
       navigate("/employees");
@@ -73,8 +94,8 @@ const AddEmployee = () => {
 
     setInputs((prev) => ({ ...prev, [name]: value }));
 
-    if (error[name]) {
-      setError((prev) => ({ ...prev, [name]: "" }));
+    if (formError[name]) {
+      setFormError((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -103,8 +124,6 @@ const AddEmployee = () => {
     if (step === 2) {
       if (!inputs.dept_id) {
         newErrors.dept_id = "Department cannot remain empty";
-      } else if (Number(inputs.dept_id) <= 0) {
-        newErrors.dept_id = "Invalid department";
       }
       if (!inputs.salary) {
         newErrors.salary = "Salary cannot remain empty";
@@ -122,7 +141,7 @@ const AddEmployee = () => {
     }
 
     if (Object.keys(newErrors).length > 0) {
-      setError(newErrors);
+      setFormError(newErrors);
       return;
     }
 
@@ -132,14 +151,34 @@ const AddEmployee = () => {
   const today = new Date();
   const inputDate = new Date(inputs.hire_date);
 
+  const selectedDept = data.find(
+    (department) => department.dept_id === Number(inputs.dept_id),
+  );
+
   const nextStep = () => {
-    setError({});
+    setFormError({});
     setStep((prevStep) => prevStep + 1);
   };
   const prevStep = () => {
-    setError({});
+    setFormError({});
     setStep((prevStep) => (prevStep > 1 ? prevStep - 1 : prevStep));
   };
+
+  if (isLoading) {
+    return (
+      <Typography align="center" fontWeight={600}>
+        Loading Departments...
+        <CircularProgress sx={{ display: "block", mx: "auto", mt: 2 }} />
+      </Typography>
+    );
+  }
+  if (error) {
+    return (
+      <Alert severity="error">
+        <Typography fontWeight={600}>{error.message}</Typography>
+      </Alert>
+    );
+  }
 
   return (
     <>
@@ -168,9 +207,9 @@ const AddEmployee = () => {
               fullWidth
               margin="normal"
             />
-            {error.first_name && (
+            {formError.first_name && (
               <Alert severity="error" variant="standard">
-                {error.first_name}
+                {formError.first_name}
               </Alert>
             )}
 
@@ -182,9 +221,9 @@ const AddEmployee = () => {
               fullWidth
               margin="normal"
             />
-            {error.last_name && (
+            {formError.last_name && (
               <Alert severity="error" variant="standard">
-                {error.last_name}
+                {formError.last_name}
               </Alert>
             )}
 
@@ -197,9 +236,9 @@ const AddEmployee = () => {
               fullWidth
               margin="normal"
             />
-            {error.email && (
+            {formError.email && (
               <Alert severity="error" variant="standard">
-                {error.email}
+                {formError.email}
               </Alert>
             )}
 
@@ -241,9 +280,9 @@ const AddEmployee = () => {
               margin="normal"
               InputLabelProps={{ shrink: true }}
             />
-            {error.hire_date && (
+            {formError.hire_date && (
               <Alert severity="error" variant="standard">
-                {error.hire_date}
+                {formError.hire_date}
               </Alert>
             )}
 
@@ -256,24 +295,31 @@ const AddEmployee = () => {
               fullWidth
               margin="normal"
             />
-            {error.salary && (
+            {formError.salary && (
               <Alert severity="error" variant="standard">
-                {error.salary}
+                {formError.salary}
               </Alert>
             )}
 
             <TextField
-              label="Department ID"
-              type="number"
+              select
+              label="Department"
               name="dept_id"
               value={inputs.dept_id}
               onChange={handleInputs}
               fullWidth
               margin="normal"
-            />
-            {error.dept_id && (
+              disabled={isLoading}
+            >
+              {data.map((department) => (
+                <MenuItem key={department.dept_id} value={department.dept_id}>
+                  {department.dept_name}
+                </MenuItem>
+              ))}
+            </TextField>
+            {formError.dept_id && (
               <Alert severity="error" variant="standard">
-                {error.dept_id}
+                {formError.dept_id}
               </Alert>
             )}
 
@@ -285,9 +331,9 @@ const AddEmployee = () => {
               fullWidth
               margin="normal"
             />
-            {error.state && (
+            {formError.state && (
               <Alert severity="error" variant="standard">
-                {error.state}
+                {formError.state}
               </Alert>
             )}
 
@@ -333,7 +379,10 @@ const AddEmployee = () => {
                   value={`$${Number(inputs.salary).toLocaleString()}`}
                 />
                 <Row label="Hire Date" value={inputs.hire_date} />
-                <Row label="Department" value={inputs.dept_id} />
+                <Row
+                  label="Department"
+                  value={selectedDept ? selectedDept.dept_name : ""}
+                />
                 <Row label="Status" value={inputs.state} />
               </Stack>
             </Card>

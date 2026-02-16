@@ -33,7 +33,7 @@ const AddDepartment = () => {
     },
 
     onSuccess: (createdDepartmentMsg) => {
-      queryClient.invalidateQueries(["departments"]);
+      queryClient.invalidateQueries({ queryKey: ["departments"] });
       setInputs(emptyForm);
       console.log(createdDepartmentMsg);
       navigate("/departments");

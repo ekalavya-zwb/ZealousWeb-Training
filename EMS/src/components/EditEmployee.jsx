@@ -8,6 +8,7 @@ import {
   Typography,
   CircularProgress,
   Alert,
+  MenuItem,
 } from "@mui/material";
 
 const EditEmployee = () => {
@@ -28,8 +29,27 @@ const EditEmployee = () => {
   const [inputs, setInputs] = useState(emptyForm);
   const [formError, setFormError] = useState({});
 
+  const {
+    data: dept_data = [],
+    isLoading: isDept,
+    error: isDeptError,
+  } = useQuery({
+    queryKey: ["departments"],
+    queryFn: async () => {
+      const res = await fetch("/api/departments", {
+        cache: "no-store",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to load departments.");
+      }
+
+      return res.json();
+    },
+  });
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ["employee", id],
+    queryKey: ["employees", id],
     enabled: !!id,
     queryFn: async () => {
       const res = await fetch(`/api/employees/${id}`, {
@@ -70,7 +90,7 @@ const EditEmployee = () => {
       return res.json();
     },
     onSuccess: (updatedEmployee) => {
-      queryClient.invalidateQueries(["employees"]);
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
       setInputs(emptyForm);
       console.log(updatedEmployee);
       navigate("/employees");
@@ -108,8 +128,6 @@ const EditEmployee = () => {
     }
     if (!inputs.dept_id) {
       newErrors.dept_id = "Department cannot remain empty";
-    } else if (Number(inputs.dept_id) <= 0) {
-      newErrors.dept_id = "Invalid department";
     }
     if (!inputs.salary) {
       newErrors.salary = "Salary cannot remain empty";
@@ -145,6 +163,22 @@ const EditEmployee = () => {
     return (
       <Alert severity="error">
         <Typography fontWeight={600}>{error.message}</Typography>
+      </Alert>
+    );
+  }
+
+  if (isDept) {
+    return (
+      <Typography align="center" fontWeight={600}>
+        Loading Departments...
+        <CircularProgress sx={{ display: "block", mx: "auto", mt: 2 }} />
+      </Typography>
+    );
+  }
+  if (isDeptError) {
+    return (
+      <Alert severity="error">
+        <Typography fontWeight={600}>{isDeptError.message}</Typography>
       </Alert>
     );
   }
@@ -241,14 +275,21 @@ const EditEmployee = () => {
         )}
 
         <TextField
-          label="Department ID"
-          type="number"
+          select
+          label="Department"
           name="dept_id"
           value={inputs.dept_id}
           onChange={handleInputs}
           fullWidth
           margin="normal"
-        />
+          disabled={isDept}
+        >
+          {dept_data.map((department) => (
+            <MenuItem key={department.dept_id} value={department.dept_id}>
+              {department.dept_name}
+            </MenuItem>
+          ))}
+        </TextField>
         {formError.dept_id && (
           <Alert severity="error" variant="standard">
             {formError.dept_id}

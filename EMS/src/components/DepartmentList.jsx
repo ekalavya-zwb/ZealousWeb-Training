@@ -84,7 +84,7 @@ const DepartmentList = () => {
     },
 
     onSuccess: (deletedDepartment) => {
-      queryClient.invalidateQueries(["departments"]);
+      queryClient.invalidateQueries({ queryKey: ["departments"] });
       console.log(deletedDepartment);
     },
   });

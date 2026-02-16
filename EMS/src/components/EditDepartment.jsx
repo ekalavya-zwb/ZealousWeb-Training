@@ -62,7 +62,7 @@ const EditDepartment = () => {
       return res.json();
     },
     onSuccess: (updatedDepartmentMsg) => {
-      queryClient.invalidateQueries(["departments"]);
+      queryClient.invalidateQueries({ queryKey: ["departments"] });
       setInputs(emptyForm);
       console.log(updatedDepartmentMsg);
       navigate("/departments");
