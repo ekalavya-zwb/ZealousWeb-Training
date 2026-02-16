@@ -13,7 +13,7 @@ import Layout from "./components/Layout";
 import AssignProject from "./components/AssignProject";
 import AuthProvider from "./context/AuthProvider";
 import Login from "./components/Login";
-import ProtectedRoute from "./context/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
