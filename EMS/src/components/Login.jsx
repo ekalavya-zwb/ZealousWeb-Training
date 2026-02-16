@@ -105,7 +105,9 @@ const Login = () => {
         >
           {loginMutation.isError && (
             <Alert severity="error" sx={{ mb: 2 }}>
-              <Typography>{loginMutation.error.message}</Typography>
+              <Typography fontWeight={600}>
+                {loginMutation.error.message}
+              </Typography>
             </Alert>
           )}
 
