@@ -24,13 +24,12 @@ class ErrorBoundary extends React.Component {
       return (
         <Box
           sx={{
-            minHeight: "100vh",
+            minHeight: "95vh",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
             textAlign: "center",
-            p: 3,
           }}
         >
           <Typography variant="h4" gutterBottom>

@@ -17,6 +17,7 @@ import {
   Select,
   Box,
   Paper,
+  Alert,
 } from "@mui/material";
 
 const EmployeeList = () => {
@@ -203,14 +204,25 @@ const EmployeeList = () => {
           Employees
         </Typography>
 
-        <Button
-          variant="contained"
-          color="primary"
-          component={NavLink}
-          to="/employees/add"
-        >
-          Add Employee
-        </Button>
+        <Stack direction="row" spacing={2}>
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={exportToCSV}
+            disabled={newData.length === 0}
+          >
+            Export CSV
+          </Button>
+
+          <Button
+            variant="contained"
+            color="primary"
+            component={NavLink}
+            to="/employees/add"
+          >
+            Add Employee
+          </Button>
+        </Stack>
       </Box>
 
       <Box sx={{ mb: 3 }}>
@@ -440,16 +452,6 @@ const EmployeeList = () => {
           </Table>
         </Paper>
       </Box>
-
-      <Button
-        variant="contained"
-        color="success"
-        onClick={exportToCSV}
-        disabled={newData.length === 0}
-        sx={{ mt: 3 }}
-      >
-        Export CSV
-      </Button>
     </>
   );
 };
