@@ -145,6 +145,50 @@ const EmployeeList = () => {
     );
   }
 
+  const exportToCSV = () => {
+    if (newData.length === 0) return;
+
+    const headers = [
+      "ID",
+      "First Name",
+      "Last Name",
+      "Email",
+      "Salary",
+      "Hire Date",
+      "Department ID",
+      "Status",
+    ];
+
+    const rows = newData.map((employee) => [
+      employee.id,
+      employee.first_name,
+      employee.last_name,
+      employee.email,
+      roundSalary(Number(employee.salary)),
+      formatDate(employee.hire_date),
+      employee.dept_id,
+      employee.state,
+    ]);
+
+    const content = [headers, ...rows]
+      .map((row) => row.map((value) => `"${value}"`).join(","))
+      .join("\n");
+
+    const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "employees.csv";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <>
       <Box
@@ -396,6 +440,16 @@ const EmployeeList = () => {
           </Table>
         </Paper>
       </Box>
+
+      <Button
+        variant="contained"
+        color="success"
+        onClick={exportToCSV}
+        disabled={newData.length === 0}
+        sx={{ mt: 3 }}
+      >
+        Export CSV
+      </Button>
     </>
   );
 };

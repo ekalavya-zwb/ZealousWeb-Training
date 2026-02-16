@@ -111,6 +111,36 @@ const DepartmentList = () => {
     );
   }
 
+  const exportToCSV = () => {
+    if (newData.length === 0) return;
+
+    const headers = ["Department ID", "Department", "Location"];
+
+    const rows = newData.map((department) => [
+      department.dept_id,
+      department.dept_name,
+      department.location,
+    ]);
+
+    const content = [headers, ...rows]
+      .map((row) => row.map((value) => `"${value}"`).join(","))
+      .join("\n");
+
+    const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "departments.csv";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <>
       <Box
@@ -280,6 +310,16 @@ const DepartmentList = () => {
           </Table>
         </Paper>
       </Box>
+
+      <Button
+        variant="contained"
+        color="success"
+        onClick={exportToCSV}
+        disabled={newData.length === 0}
+        sx={{ mt: 3 }}
+      >
+        Export CSV
+      </Button>
     </>
   );
 };
