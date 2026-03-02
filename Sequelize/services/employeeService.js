@@ -1,5 +1,11 @@
-const { Employee, Department, Project, sequelize } = require("../models");
-const { Op, fn, col, Sequelize } = require("sequelize");
+const {
+  Employee,
+  Department,
+  Project,
+  EmployeeTransferLogs,
+  sequelize,
+} = require("../models");
+const { Op, fn, col, Sequelize, where } = require("sequelize");
 
 async function createEmployees(employees) {
   await Employee.bulkCreate(employees, { validate: true });
@@ -292,6 +298,117 @@ async function eagerLoadingQueries() {
   });
 }
 
+// async function lazyLoadingQueries(id) {
+//   const employee = await Employee.findByPk(id);
+
+//   if (!employee) {
+//     throw new Error("Employee not found");
+//   }
+
+//   return await employee.getProjects({
+//     attributes: ["projectId", "projectName"],
+//     joinTableAttributes: ["role"],
+//   });
+// }
+
+// async function lazyLoadingQueries() {
+//   const employee = await Employee.findByPk(3);
+
+//   if (!employee) {
+//     throw new Error("Employee not found");
+//   }
+
+//   return await employee.addProject(4, {
+//     through: {
+//       role: "Marketing Manager",
+//       hoursWorked: 50,
+//     },
+//   });
+// }
+
+// async function lazyLoadingQueries() {
+//   const employee = await Employee.findByPk(1);
+
+//   if (!employee) {
+//     throw new Error("Employee not found");
+//   }
+
+//   return await employee.hasProject(3);
+// }
+
+// async function lazyLoadingQueries() {
+//   const employee = await Employee.findByPk(1);
+
+//   if (!employee) {
+//     throw new Error("Employee not found");
+//   }
+
+//   return await employee.countProjects();
+// }
+
+// async function lazyLoadingQueries() {
+//   const employee = await Employee.findByPk(2);
+
+//   if (!employee) {
+//     throw new Error("Employee not found");
+//   }
+
+//   return await employee.createProject(
+//     {
+//       projectName: "ERP Portal",
+//       startDate: "2023-05-14",
+//       endDate: "2023-11-30",
+//       budget: 100000,
+//       deptId: 1,
+//     },
+//     {
+//       through: {
+//         role: "Lead Developer",
+//         hoursWorked: 200,
+//       },
+//     },
+//   );
+// }
+
+async function lazyLoadingQueries() {
+  const employee = await Employee.findByPk(2);
+
+  if (!employee) {
+    throw new Error("Employee not found");
+  }
+
+  return await employee.removeProject(6);
+}
+
+async function transactionPractice(empId, newDeptId) {
+  await sequelize.transaction(async (t) => {
+    const employee = await Employee.findByPk(empId, {
+      transaction: t,
+      lock: t.LOCK.UPDATE,
+    });
+
+    if (!employee) {
+      throw new Error("Employee not found");
+    }
+
+    const oldDeptId = employee.deptId;
+
+    await employee.update({ deptId: newDeptId }, { transaction: t });
+
+    return await EmployeeTransferLogs.create(
+      {
+        empId: 9,
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        email: employee.email,
+        oldDeptId,
+        newDeptId,
+      },
+      { transaction: t },
+    );
+  });
+}
+
 module.exports = {
   createEmployees,
   createEmployee,
@@ -315,4 +432,6 @@ module.exports = {
   selectEmployeesWithComplexWhereConditions,
   selectEmployeesWithAnalyticsQueries,
   eagerLoadingQueries,
+  lazyLoadingQueries,
+  transactionPractice,
 };

@@ -18,6 +18,8 @@ const {
   selectEmployeesWithComplexWhereConditions,
   selectEmployeesWithAnalyticsQueries,
   eagerLoadingQueries,
+  lazyLoadingQueries,
+  transactionPractice,
 } = require("../services/employeeService");
 
 async function getEmployees(req, res) {
@@ -199,6 +201,27 @@ async function practicingEagerLoadingQueries(req, res) {
   }
 }
 
+async function practicingLazyLoadingQueries(req, res) {
+  try {
+    const employee = await lazyLoadingQueries();
+    res.status(200).json(employee);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function performingTransactionPractice(req, res) {
+  const { id } = req.body;
+  const { deptId } = req.body;
+
+  try {
+    await transactionPractice(id, deptId);
+    res.status(200).json({ message: "Transaction executed successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   getEmployees,
   getEmployee,
@@ -219,4 +242,6 @@ module.exports = {
   getEmployeesWithComplexWhereConditions,
   getEmployeesWithAnalyticsQueries,
   practicingEagerLoadingQueries,
+  practicingLazyLoadingQueries,
+  performingTransactionPractice,
 };

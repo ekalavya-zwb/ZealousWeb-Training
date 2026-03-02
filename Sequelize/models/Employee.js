@@ -77,10 +77,16 @@ module.exports = (sequelize, DataTypes) => {
       managerId: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        references: {
+          model: "employees",
+          key: "id",
+        },
         validate: {
           isInt: true,
           min: 1,
         },
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
       },
     },
     {

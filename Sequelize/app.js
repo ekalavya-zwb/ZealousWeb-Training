@@ -4,6 +4,7 @@ const employeeRoutes = require("./routes/employeeRoutes");
 const departmentRoutes = require("./routes/departmentRoutes");
 const employeeProjectRoutes = require("./routes/employeeProjectRoutes");
 const projectRoutes = require("./routes/projectRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 const PORT = 3000;
@@ -18,6 +19,7 @@ app.use("/employees", employeeRoutes);
 app.use("/departments", departmentRoutes);
 app.use("/projects", projectRoutes);
 app.use("/employeeProjects", employeeProjectRoutes);
+app.use("/orders", orderRoutes);
 
 // Test route
 app.get("/", (req, res) => {

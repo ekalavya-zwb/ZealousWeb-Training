@@ -17,6 +17,9 @@ const controller = require("../controllers/employeeController");
 // router.get("/", controller.getPermanentlyDeletedEmployees);
 // router.get("/", controller.getEmployeesWithComplexWhereConditions);
 // router.get("/", controller.getEmployeesWithAnalyticsQueries);
-router.get("/", controller.practicingEagerLoadingQueries);
+// router.get("/", controller.practicingEagerLoadingQueries);
+// router.get("/:id", controller.practicingLazyLoadingQueries);
+// router.get("/", controller.practicingLazyLoadingQueries);
+router.patch("/", controller.performingTransactionPractice);
 
 module.exports = router;

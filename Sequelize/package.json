@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ekalavya-zwb/ZealousWeb-Training#readme",
   "dependencies": {
+    "@faker-js/faker": "^10.3.0",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "mysql2": "^3.17.4",
