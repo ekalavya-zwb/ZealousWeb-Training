@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.employee-table {
+  margin: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th {
+  padding: 5px;
+  text-align: center;
+}
+
+table td {
+  padding: 5px;
+  text-align: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.form-container h2 {
+  text-align: center;
+}
+
+.form-container label {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+.form-container label span {
+  width: 120px;
+}
+
+.form-container input,
+select {
+  flex: 1;
+  padding: 6px;
+  font-size: 16px;
+}
+
+.form-container button {
+  align-self: center;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.form-error {
+  margin-left: 120px;
+  color: darkred;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  color: darkred;
+  margin: 20px;
+  font-size: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header button {
+  align-self: center;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
