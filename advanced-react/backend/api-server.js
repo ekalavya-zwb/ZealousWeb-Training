@@ -100,6 +100,63 @@ app.post("/api/employees", async (req, res) => {
   }
 });
 
+app.put("/api/employees/:id", async (req, res) => {
+  const empId = Number(req.params.id);
+
+  if (Number.isNaN(empId)) {
+    return res.status(400).json({ message: "Invalid employee ID" });
+  }
+
+  const { salary } = req.body;
+
+  try {
+    const [result] = await con.query(
+      "UPDATE employees SET salary=? WHERE id=?",
+      [salary, empId],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    res.status(200).json({
+      message: "Employee updated successfully",
+      employee: {
+        id: empId,
+        salary,
+      },
+    });
+  } catch (error) {
+    console.error(`PUT /api/employees/${empId} error:`, error);
+    res.status(500).json({ message: "Failed to update employee" });
+  }
+});
+
+app.delete("/api/employees/:id", async (req, res) => {
+  const empId = Number(req.params.id);
+
+  if (Number.isNaN(empId)) {
+    return res.status(400).json({ message: "Invalid employee ID" });
+  }
+
+  try {
+    const [result] = await con.query("DELETE FROM employees WHERE id = ?", [
+      empId,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Employee deleted successfully", id: empId });
+  } catch (error) {
+    console.error(`DELETE /api/employees/${empId} error:`, error);
+    res.status(500).json({ message: "Failed to delete employee" });
+  }
+});
+
 app.use((req, res) => {
   res.status(404).json({ message: "404 - Page Not Found" });
 });

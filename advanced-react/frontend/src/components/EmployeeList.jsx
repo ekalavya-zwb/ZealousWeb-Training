@@ -4,13 +4,14 @@ import useEmployees from "../hooks/useEmployees";
 import "../styles/Employees.css";
 
 function EmployeeList() {
-  const { employees, loading, error, fetchEmployees } = useEmployees();
+  const { employees, loading, error, fetchEmployees, deleteEmployee } =
+    useEmployees();
 
   useEffect(() => {
     fetchEmployees();
   }, [fetchEmployees]);
 
-  const formatDate = (date) => (date ? date.split("T")[0] : "-");
+  const formatDate = (date) => (date ? date.split("T")[0] : "");
   const navigate = useNavigate();
 
   if (loading) return <p>Loading employees...</p>;
@@ -35,6 +36,7 @@ function EmployeeList() {
             <th>Salary</th>
             <th>Dept ID</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
@@ -54,6 +56,31 @@ function EmployeeList() {
                 <td>${employee.salary}</td>
                 <td>{employee.dept_id}</td>
                 <td>{employee.state}</td>
+                <td>
+                  <button
+                    className="action-btn"
+                    type="button"
+                    onClick={() => navigate(`/edit/${employee.id}`)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    type="button"
+                    className="action-btn"
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          "Are you sure you want to delete this employee?",
+                        )
+                      ) {
+                        deleteEmployee(employee.id);
+                      }
+                    }}
+                    style={{ marginLeft: "5px" }}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))
           )}

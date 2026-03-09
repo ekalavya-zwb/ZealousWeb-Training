@@ -17,9 +17,12 @@ import SignIn from "./components/SignIn";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import EmployeeList from "./components/EmployeeList";
 import AddEmployee from "./components/AddEmployee";
+import Employees from "./components/Employees";
+import { EmployeeForm } from "./components/EmployeeForm";
+import EditEmployee from "./components/EditEmployee";
 
 function App() {
-  const { addToast } = useToast();
+  // const { addToast } = useToast();
 
   return (
     <>
@@ -90,10 +93,13 @@ function App() {
             }
           />
         </Routes> */}
-        <Routes>
+        {/* <Routes>
           <Route path="/" element={<EmployeeList />}></Route>
           <Route path="/add" element={<AddEmployee />}></Route>
-        </Routes>
+          <Route path="/edit/:id" element={<EditEmployee />}></Route>
+        </Routes> */}
+        {/* <Employees />
+        <EmployeeForm /> */}
       </>
     </>
   );

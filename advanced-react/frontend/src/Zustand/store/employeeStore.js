@@ -138,6 +138,13 @@ const useEmployeeStore = create(
         }
       },
 
+      setSelectedEmployee: (id) => {
+        set((state) => {
+          state.selectedEmployee =
+            state.employees.find((e) => e.id === id) || null;
+        });
+      },
+
       setFilter: (key, value) => {
         set((state) => {
           state.filters[key] = value;
