@@ -25,7 +25,7 @@ export const createEmployee = async (employeeData) => {
 };
 
 export const updateEmployee = async ({ id, data }) => {
-  const res = await fetch(`/api/employees/${id}`, {
+  const res = await fetch(`/api/employees/salary/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

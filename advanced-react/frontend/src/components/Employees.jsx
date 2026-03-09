@@ -29,6 +29,7 @@ function Employees() {
 
   return (
     <div className="employee-table">
+      <h2>Employees</h2>
       <table border={2}>
         <thead>
           <tr>

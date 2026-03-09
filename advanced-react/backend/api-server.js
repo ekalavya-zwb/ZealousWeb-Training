@@ -107,6 +107,35 @@ app.put("/api/employees/:id", async (req, res) => {
     return res.status(400).json({ message: "Invalid employee ID" });
   }
 
+  const { first_name, last_name, email, hire_date, salary, dept_id, state } =
+    req.body;
+
+  try {
+    const [result] = await con.query(
+      "UPDATE employees SET first_name=?, last_name=?, email=?, hire_date=?, salary=?, dept_id=?, state=? WHERE id=?",
+      [first_name, last_name, email, hire_date, salary, dept_id, state, empId],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Employee updated successfully", id: empId });
+  } catch (error) {
+    console.error(`PUT /api/employees/${empId} error:`, error);
+    res.status(500).json({ message: "Failed to update employee" });
+  }
+});
+
+app.put("/api/employees/salary/:id", async (req, res) => {
+  const empId = Number(req.params.id);
+
+  if (Number.isNaN(empId)) {
+    return res.status(400).json({ message: "Invalid employee ID" });
+  }
+
   const { salary } = req.body;
 
   try {
