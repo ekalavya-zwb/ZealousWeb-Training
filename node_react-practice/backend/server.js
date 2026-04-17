@@ -1,20 +1,36 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
+const { PORT } = require("./config/config");
 const con = require("./db");
+const sendEmail = require("./services/emailService");
+const logger = require("./config/libs/logger");
+const upload = require("./config/libs/multer");
+// const job = require("./config/libs/job");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/libs/swagger");
+const { limiter } = require("./config/libs/limiter");
+const { loginLimiter } = require("./config/libs/limiter");
+const redisClient = require("./config/libs/redisClient");
+
 const app = express();
-const PORT = 3000;
 
 app.use(express.json());
-dotenv.config();
-app.set("json spaces", 2);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec)); // Swagger UI route
+// app.use(limiter); // Apply rate limiting to all requests
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to my Express application!" });
 });
 
 app.get("/api/orders", async (req, res) => {
+  const cachedOrders = await redisClient.get("orders");
+
+  if (cachedOrders) {
+    logger.info("Fetched orders from cache");
+    return res.status(200).json(JSON.parse(cachedOrders));
+  }
+
   try {
     const [result] = await con.query(
       `SELECT o.order_id, o.customer_name, w.warehouse_name, o.order_date, o.status, SUM(oi.quantity * oi.price) as total_amount
@@ -26,11 +42,32 @@ app.get("/api/orders", async (req, res) => {
     );
 
     res.status(200).json(result);
+    await redisClient.set("orders", JSON.stringify(result));
+    logger.info("Fetched all orders successfully");
   } catch (error) {
-    console.error(`GET /api/orders ${error}`);
+    logger.error(`GET /api/orders ${error}`);
     res.status(500).json({ message: "Failed to fetch orders" });
   }
 });
+
+// app.get("/api/orders", async (req, res) => {
+//   try {
+//     const [result] = await con.query(
+//       `SELECT o.order_id, o.customer_name, w.warehouse_name, o.order_date, o.status, SUM(oi.quantity * oi.price) as total_amount
+//        FROM orders o
+//        JOIN warehouses w ON o.warehouse_id = w.warehouse_id
+//        JOIN order_items oi ON oi.order_id = o.order_id
+//        GROUP BY o.order_id, o.customer_name, w.warehouse_name, o.order_date, o.status
+//        ORDER BY o.order_id ASC`,
+//     );
+
+//     res.status(200).json(result);
+//     logger.info("Fetched all orders successfully");
+//   } catch (error) {
+//     logger.error(`GET /api/orders ${error}`);
+//     res.status(500).json({ message: "Failed to fetch orders" });
+//   }
+// });
 
 app.get("/api/orders/:id", async (req, res) => {
   const id = Number(req.params.id);
@@ -130,7 +167,7 @@ app.put("/api/orders/:id/cancel", async (req, res) => {
   }
 });
 
-app.post("/api/login", async (req, res) => {
+app.post("/api/login", loginLimiter, async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -166,6 +203,28 @@ app.post("/api/login", async (req, res) => {
     console.error(`POST /api/login ${error}`);
     res.status(500).json({ message: error.message });
   }
+});
+
+app.post("/api/send-email", async (req, res) => {
+  const { from, to, subject, text } = req.body;
+
+  try {
+    await sendEmail(from, to, subject, text);
+    res.status(200).json({ message: "Email sent successfully" });
+  } catch (error) {
+    console.error(`POST /api/send-email ${error}`);
+    res.status(500).json({ message: "Failed to send email" });
+  }
+});
+
+// app.post("/api/upload", upload.single("image"), (req, res) => {
+//   console.log("File uploaded:", req.file);
+//   res.status(200).json({ message: "File uploaded successfully" });
+// });
+
+app.post("/api/upload", upload.array("image", 5), (req, res) => {
+  console.log("Files uploaded:", req.files);
+  res.status(200).json({ message: "Files uploaded successfully" });
 });
 
 app.use((req, res) => {

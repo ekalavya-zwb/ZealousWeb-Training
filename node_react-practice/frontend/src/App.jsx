@@ -10,11 +10,12 @@ import Modal from "./components/Modal";
 import Home from "./components/Home";
 import PostCard from "./components/PostCard";
 import Accordion from "./components/Accordion";
+import Form from "./pages/Form";
 
 function App() {
   return (
     <>
-      {/* <ToastContainer />
+      <ToastContainer />
       <Routes>
         <Route
           path="/login"
@@ -27,7 +28,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Dashboard />} />
         </Route>
-      </Routes> */}
+      </Routes>
       {/* <TailwindPractice /> */}
       {/* <Modal /> */}
       {/* <Home /> */}
@@ -37,7 +38,7 @@ function App() {
         <PostCard.User />
         <PostCard.Buttons />
       </PostCard> */}
-      <Accordion allowMultiple={true}>
+      {/* <Accordion allowMultiple={true}>
         <Accordion.Item id="1">
           <Accordion.Header>What is React?</Accordion.Header>
           <Accordion.Body>
@@ -50,7 +51,8 @@ function App() {
             Technically it's a library, but often used like a framework.
           </Accordion.Body>
         </Accordion.Item>
-      </Accordion>
+      </Accordion> */}
+      {/* <Form /> */}
     </>
   );
 }
