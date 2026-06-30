@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      #messageInput {
+        width: 300px;
+        padding: 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+      #sendButton {
+        padding: 8px 16px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      #messages {
+        margin-top: 10px;
+      }
+
+      .message-block {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+        max-width: 50%;
+      }
+
+      .username {
+        font-size: 0.8em;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 5px;
+        align-self: flex-start;
+      }
+
+      .message {
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .timestamp {
+        font-size: 0.75em;
+        color: #6c757d;
+        margin-top: 5px;
+        align-self: flex-end;
+      }
+
+      .sentMessage {
+        background-color: #d1e7dd;
+      }
+
+      .receivedMessage {
+        background-color: #f8d7da;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Chatting...</h1>
+    <input id="messageInput" placeholder="Type a message..." />
+    <button id="sendButton">Send</button>
+
+    <div id="messages"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      const messageInput = document.getElementById("messageInput");
+      const sendButton = document.getElementById("sendButton");
+      const messagesContainer = document.getElementById("messages");
+
+      const username = prompt("Enter your username:") || "Anonymous";
+      if (username) {
+        socket.emit("registerUser", username);
+      }
+
+      sendButton.addEventListener("click", () => {
+        const message = messageInput.value;
+        if (message) {
+          socket.emit("chatMessage", message);
+          messageInput.value = "";
+        }
+      });
+
+      socket.on("chatMessage", (data) => {
+        const blockElement = document.createElement("div");
+        blockElement.classList.add("message-block");
+
+        const usernameElement = document.createElement("div");
+        const messageElement = document.createElement("div");
+        const timestampElement = document.createElement("div");
+
+        messageElement.textContent = data.message;
+        usernameElement.textContent = data.username;
+        timestampElement.textContent = new Date(
+          data.timestamp,
+        ).toLocaleTimeString(["en-US"], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        usernameElement.classList.add("username");
+        messageElement.classList.add("message");
+        timestampElement.classList.add("timestamp");
+
+        if (data.senderId === socket.id) {
+          messageElement.classList.add("sentMessage");
+        } else {
+          messageElement.classList.add("receivedMessage");
+        }
+
+        blockElement.appendChild(usernameElement);
+        blockElement.appendChild(messageElement);
+        blockElement.appendChild(timestampElement);
+
+        messagesContainer.appendChild(blockElement);
+      });
+    </script>
+  </body>
+</html>

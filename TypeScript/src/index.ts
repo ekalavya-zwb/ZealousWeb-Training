@@ -694,3 +694,79 @@
 // console.log(reverseArray([1, 2, 3, 4, 5]));
 // console.log(reverseArray(["a", "b", "c"]));
 // console.log(reverseArray([true, false, true]));
+
+// Problem: 1
+// Task: Define a strict AppConfig interface and apply it so the compiler flags invalid property access.
+
+// interface AppConfig {
+//   host: string;
+//   port: number;
+//   ssl: boolean;
+// }
+
+// const config: AppConfig = {
+//   host: "localhost",
+//   port: 8080,
+//   ssl: true,
+// };
+
+// console.log(config.hostt);
+
+// Problem: 2
+// Task: Use optional properties correctly in the interface, and write a safe formatter function using optional chaining or nullish coalescing.
+
+// interface UserProfile {
+//   id: string;
+//   username: string;
+//   phoneNumber?: string;
+//   bio?: string;
+// }
+
+// function getFormattedPhone(user: UserProfile): string {
+//   return user.phoneNumber?.trim() ?? "No phone number provided";
+// }
+
+// Problem: 3
+// Task: Implement a discriminated union so that you cannot access transactionId if the response status is 'FAILED'.
+
+// type SuccessResponse = {
+//   status: "SUCCESS";
+//   transactionId: string;
+//   amount: number;
+// };
+
+// type FailedResponse = {
+//   status: "FAILED";
+//   message: string;
+//   errorCode: number;
+// };
+
+// type PaymentResponse = SuccessResponse | FailedResponse;
+
+// function handlePayment(response: PaymentResponse) {
+//   if (response.status === "SUCCESS") {
+//     // Should compile perfectly
+//     console.log(`Success! ID: ${response.transactionId}`);
+//   } else {
+//     // Should flag a compiler error if you try to read response.transactionId here
+//     console.log(`Failed! Error: ${response.message}`);
+//   }
+// }
+
+// Problem: 4
+// Task: Enforce immutability on these specific properties at compilation level using TypeScript modifiers.
+
+// interface UserTransaction {
+//   readonly id: string;
+//   readonly userId: string;
+//   amount: number;
+//   readonly createdAt: Date;
+// }
+
+// const tx: UserTransaction = {
+//   id: "tx_123",
+//   userId: "u_99",
+//   amount: 50,
+//   createdAt: new Date(),
+// };
+// tx.id = "tx_456";

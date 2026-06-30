@@ -1,0 +1,40 @@
+{
+  "users": [
+    {
+      "name": "user1",
+      "email": "user1@example.com",
+      "password": "password123",
+      "id": "gQ3dtX56LEM"
+    },
+    {
+      "name": "user2",
+      "email": "user2@example.com",
+      "password": "password123",
+      "id": "zxS8VZRmBb4"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "slug": "john-doe",
+      "userId": "gQ3dtX56LEM",
+      "id": "ayhTplxcYdA"
+    },
+    {
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "slug": "jane-smith",
+      "userId": "gQ3dtX56LEM",
+      "id": "rHgwmfgrNhQ"
+    },
+    {
+      "name": "Kyle Butler",
+      "email": "kyle.butler@example.com",
+      "slug": "kyle-butler",
+      "userId": "zxS8VZRmBb4",
+      "id": "amhmDBKICD0"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

@@ -35,193 +35,142 @@ const Modal = () => {
 
       {displayModal && mainModal}
 
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
-      </p>
-
-      <p className="m-4">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est facilis
-        magnam sequi porro laboriosam fugiat cumque, explicabo asperiores
-        reiciendis exercitationem officiis velit, dolorem adipisci hic neque
-        nostrum totam quod tempore!
+      <p className="p-4">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+        laboriosam nemo ab aut omnis sequi sapiente maiores ducimus incidunt
+        itaque aliquid, alias repellat et? Iusto rem itaque odit autem ipsa?
       </p>
     </>
   );

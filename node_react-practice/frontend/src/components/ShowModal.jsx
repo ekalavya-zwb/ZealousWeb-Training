@@ -10,6 +10,20 @@ const MyModal = ({ handleCloseModal, children }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.key === "Escape") {
+        handleCloseModal();
+      }
+    };
+
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [handleCloseModal]);
+
   return ReactDOM.createPortal(
     <>
       <div

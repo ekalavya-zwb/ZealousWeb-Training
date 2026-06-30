@@ -1,0 +1,25 @@
+{
+  "name": "queue-tutorial",
+  "version": "1.0.0",
+  "description": "Queue Tutorial",
+  "homepage": "https://github.com/ekalavya-zwt/ZealousWeb-Training#readme",
+  "bugs": {
+    "url": "https://github.com/ekalavya-zwt/ZealousWeb-Training/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ekalavya-zwt/ZealousWeb-Training.git"
+  },
+  "license": "ISC",
+  "author": "Ekalavya",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bullmq": "^5.76.10",
+    "dotenv": "^17.4.2",
+    "nodemailer": "^8.0.7"
+  }
+}

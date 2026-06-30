@@ -1,0 +1,29 @@
+{
+  "name": "live-leaderboard",
+  "version": "1.0.0",
+  "description": "Live Leaderboard using Redis",
+  "homepage": "https://github.com/ekalavya-zwt/ZealousWeb-Training#readme",
+  "bugs": {
+    "url": "https://github.com/ekalavya-zwt/ZealousWeb-Training/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ekalavya-zwt/ZealousWeb-Training.git"
+  },
+  "license": "ISC",
+  "author": "Ekalavya",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "ioredis": "^5.10.1",
+    "nodemon": "^3.1.14",
+    "socket.io": "^4.8.3"
+  }
+}

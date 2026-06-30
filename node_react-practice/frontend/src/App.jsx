@@ -15,7 +15,7 @@ import Form from "./pages/Form";
 function App() {
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer />
       <Routes>
         <Route
           path="/login"
@@ -28,16 +28,16 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Dashboard />} />
         </Route>
-      </Routes>
+      </Routes> */}
       {/* <TailwindPractice /> */}
       {/* <Modal /> */}
       {/* <Home /> */}
-      {/* <PostCard>
+      <PostCard>
         <PostCard.Title />
         <PostCard.Content />
         <PostCard.User />
         <PostCard.Buttons />
-      </PostCard> */}
+      </PostCard>
       {/* <Accordion allowMultiple={true}>
         <Accordion.Item id="1">
           <Accordion.Header>What is React?</Accordion.Header>
